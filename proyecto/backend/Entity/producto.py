@@ -1,0 +1,18 @@
+from sqlalchemy import Column, Float, ForeignKey, Integer, String
+
+from proyecto.backend.Entity.categoria import categoria
+
+from sqlalchemy.orm import relationship, declarative_base   
+
+Base = declarative_base()
+class producto(Base):
+    __tablename__ = "productos"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String, index=True)
+    precio_venta = Column(Float)
+    stock_actual = Column(Integer)
+    stock_minimo = Column(Integer)
+    descripcion = Column(String)
+
+    categoria_id = Column(Integer, ForeignKey("categorias.id"))
