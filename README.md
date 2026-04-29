@@ -1,0 +1,2 @@
+# stockmind
+Gestor de Inventarios
