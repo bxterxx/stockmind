@@ -11,6 +11,5 @@ class Movimiento(Base):
     tipo = Column(String)  # "ENTRADA" o "SALIDA"
     cantidad = Column(Integer, nullable=False)
     fecha = Column(DateTime, default=datetime.utcnow)
-    comentario = Column(String)
 
     producto = relationship("Producto", back_populates="movimientos")
