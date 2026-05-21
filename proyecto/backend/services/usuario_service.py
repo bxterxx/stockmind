@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from proyecto.backend.Entity.usuario import Usuario
+from Entity.usuario import Usuario
 from fastapi import HTTPException
 import hashlib # Ejemplo simple de hash (usa Passlib en proyecto real)
 

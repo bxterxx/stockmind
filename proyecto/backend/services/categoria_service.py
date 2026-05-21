@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from proyecto.backend.Entity.categoria import Categoria
-from proyecto.backend.Entity.producto import Producto
+from Entity.categoria import Categoria
+from Entity.producto import Producto
 from fastapi import HTTPException
 
 def crear_categoria(db: Session, cat_data):

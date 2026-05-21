@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Float, ForeignKey, Integer, String
 
-from proyecto.backend.Entity.categoria import categoria
+from Entity import categoria
 
 from sqlalchemy.orm import relationship, declarative_base   
 

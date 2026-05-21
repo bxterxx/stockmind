@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from proyecto.backend.database import Base
+from database import Base
 
 class Movimiento(Base):
     __tablename__ = "movimientos"

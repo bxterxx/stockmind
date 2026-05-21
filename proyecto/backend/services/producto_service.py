@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from proyecto.backend.Entity.producto import Producto
-from proyecto.backend.Entity.categoria import Categoria
-from proyecto.backend.Entity.proveedor import Proveedor
+from backend.Entity.producto import Producto
+from backend.Entity.categoria import Categoria
+from backend.Entity.proveedor import Proveedor
 from fastapi import HTTPException
 
 def obtener_productos(db: Session, skip: int = 0, limit: int = 100):
