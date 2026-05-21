@@ -1,12 +1,12 @@
 from sqlalchemy.orm import Session
-from backend.Entity.movimiento import MovimientoInventario
-from backend.Entity.producto import Producto
+from Entity.movimiento import Movimiento
+from Entity.producto import producto
 from fastapi import HTTPException
 from datetime import datetime
 
 def registrar_movimiento(db: Session, mov_data):
     # Validar existencia del producto
-    producto = db.query(Producto).filter(Producto.id == mov_data.producto_id).first()
+    producto = db.query(producto).filter(producto.id == mov_data.producto_id).first()
     if not producto:
         raise HTTPException(status_code=404, detail="Producto no encontrado para el movimiento")
 
@@ -22,7 +22,7 @@ def registrar_movimiento(db: Session, mov_data):
         raise HTTPException(status_code=400, detail="Tipo de movimiento inválido (Use ENTRADA o SALIDA)")
 
     # 3. Crear el registro histórico
-    nuevo_mov = MovimientoInventario(
+    nuevo_mov = Movimiento(
         producto_id=mov_data.producto_id,
         tipo=tipo_mov,
         cantidad=mov_data.cantidad,
@@ -36,6 +36,6 @@ def registrar_movimiento(db: Session, mov_data):
 
 def obtener_historial_producto(db: Session, producto_id: int):
     # Retorna movimientos ordenados por el más reciente
-    return db.query(MovimientoInventario).filter(
-        MovimientoInventario.producto_id == producto_id
-    ).order_by(MovimientoInventario.fecha.desc()).all()
+    return db.query(Movimiento).filter(
+        Movimiento.producto_id == producto_id
+    ).order_by(Movimiento.fecha.desc()).all()

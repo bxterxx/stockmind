@@ -4,8 +4,8 @@ from typing import List
 from Entity import producto
 
 # Importas tus propios módulos
-from ..database import get_db
-from ..schemas import ProductCreate, ProductOut
+from database import get_db
+from schemas.producto_schema import ProductoCreate, ProductoOut
 
 router = APIRouter(
     prefix="/productos",
@@ -13,14 +13,14 @@ router = APIRouter(
 )
 
 #  OBTENER TODOS LOS PRODUCTOS
-@router.get("/", response_model=List[ProductOut])
+@router.get("/", response_model=List[ProductoOut])
 def get_products(db: Session = Depends(get_db), limit: int = 10):
     products = db.query(producto).limit(limit).all()
     return products
 
 #  CREAR UN PRODUCTO
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=ProductOut)
-def create_product(payload: ProductCreate, db: Session = Depends(get_db)):
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=ProductoOut)
+def create_product(payload: ProductoCreate, db: Session = Depends(get_db)):
     new_product = producto(**payload.dict())
     db.add(new_product)
     db.commit()
