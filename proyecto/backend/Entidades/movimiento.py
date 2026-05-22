@@ -4,10 +4,10 @@ from datetime import datetime
 from database import Base
 
 class Movimiento(Base):
-    __tablename__ = "movimientos"
+    __tablename__ = "Movimientos"
 
     id = Column(Integer, primary_key=True, index=True)
-    producto_id = Column(Integer, ForeignKey("productos.id"))
+    producto_id = Column(Integer, ForeignKey("Productos.id"))
     tipo = Column(String)  # "ENTRADA" o "SALIDA"
     cantidad = Column(Integer, nullable=False)
     fecha = Column(DateTime, default=datetime.utcnow)

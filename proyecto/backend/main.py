@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from Controller import  usuario_controller
-from Controller import movimiento_controller, producto_controller
+from Controladores import  usuario_controller
+from Controladores import movimiento_controller, producto_controller
 
 app = FastAPI()
 

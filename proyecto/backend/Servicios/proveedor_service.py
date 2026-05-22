@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from Entity.proveedor import Proveedor
+from Entidades.proveedor import Proveedor
 from fastapi import HTTPException
 
 def crear_proveedor(db: Session, prov_data):

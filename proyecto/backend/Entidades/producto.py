@@ -1,12 +1,12 @@
 from sqlalchemy import Column, Float, ForeignKey, Integer, String
 
-from Entity import categoria
+from Entidades import categoria
 
 from sqlalchemy.orm import relationship, declarative_base   
 
 Base = declarative_base()
 class producto(Base):
-    __tablename__ = "productos"
+    __tablename__ = "Productos"
     
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String, index=True)

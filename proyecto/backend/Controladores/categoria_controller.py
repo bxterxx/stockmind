@@ -4,8 +4,8 @@ from typing import List
 
 # Importaciones siguiendo tu estructura de carpetas
 from database import get_db
-from services import categoria_service
-from schemas.categoria_schema import CategoriaCreate, CategoriaOut # Deberás crear este archivo
+from Servicios import categoria_service
+from Esquemas.categoria_schema import CategoriaCreate, CategoriaOut # Deberás crear este archivo
 
 router = APIRouter(
     prefix="/categorias",

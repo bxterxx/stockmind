@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship, declarative_base
 Base = declarative_base()
 
 class categoria(Base):
-    __tablename__ = "categorias"
+    __tablename__ = "Categorias"
 
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String, unique=True, index=True)

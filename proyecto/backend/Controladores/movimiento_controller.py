@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from database import get_db
-from services import movimiento_service
-from schemas.movimiento_schema import MovimientoCreate, MovimientoOut
+from Servicios import movimiento_service
+from Esquemas.movimiento_schema import MovimientoCreate, MovimientoOut
 
 router = APIRouter(prefix="/movimientos", tags=["Movimientos"])
 

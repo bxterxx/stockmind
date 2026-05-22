@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
-from Entity.categoria import Categoria
-from Entity.producto import Producto
+from Entidades.categoria import Categoria
+from Entidades.producto import Producto
 from fastapi import HTTPException
 
 def crear_categoria(db: Session, cat_data):
-    nombre_norm = cat_data.nombre.strip().capitalize() # Normalizar el nombre (quitar espacios y capitalizar)
+    nombre_norm = cat_data.nombre.strip().capitalize() # Normalizar el nombre
     existe = db.query(Categoria).filter(Categoria.nombre == nombre_norm).first()
     if existe:
         raise HTTPException(status_code=400, detail="Ya existe una categoría con ese nombre")

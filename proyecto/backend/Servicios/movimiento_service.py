@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from Entity.movimiento import Movimiento
-from Entity.producto import producto
+from Entidades.movimiento import Movimiento
+from Entidades.producto import producto
 from fastapi import HTTPException
 from datetime import datetime
 

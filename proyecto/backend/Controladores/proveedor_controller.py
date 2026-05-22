@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from database import get_db
-from services import proveedor_service
-from schemas.proovedor_schema import ProveedorCreate, ProveedorOut
+from Servicios import proveedor_service
+from Esquemas.proovedor_schema import ProveedorCreate, ProveedorOut
 
 router = APIRouter(prefix="/proveedores", tags=["Proveedores"])
 

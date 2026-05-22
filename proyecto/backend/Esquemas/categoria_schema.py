@@ -5,7 +5,6 @@ class CategoriaCreate(BaseModel):
     nombre: str
     descripcion: Optional[str] = None
     
-    #Lo que devuelve
 class CategoriaOut(BaseModel):
     id: int
     nombre: str

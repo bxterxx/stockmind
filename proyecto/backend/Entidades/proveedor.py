@@ -4,7 +4,7 @@ from producto import Base
 
 
 class Proveedor(Base):
-    __tablename__ = "proveedores"
+    __tablename__ = "Proveedores"
 
     id = Column(Integer, primary_key=True, index=True)
     nombre_empresa = Column(String, unique=True, nullable=False)
