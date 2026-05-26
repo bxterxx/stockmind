@@ -1,32 +1,30 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, status
 from typing import List
-
-from database import get_db
-from proyecto.backend.Servicios import MovimientoService
-from proyecto.backend.Esquemas.MovimientoSchema import MovimientoCreate, MovimientoOut
+from Servicios.MovimientoService import MovimientoService
+from Esquemas.MovimientoSchema import MovimientoOut
 
 router = APIRouter(prefix="/movimientos", tags=["Movimientos"])
 
 # Registrar un movimiento (Entrada o Salida)
 @router.post("/", response_model=MovimientoOut, status_code=status.HTTP_201_CREATED)
-def crear_movimiento(data: MovimientoCreate, db: Session = Depends(get_db)):
-    return MovimientoService.create(db, data)
+
+def crear_movimiento(id: int, producto_id: int, tipo: str, cantidad: int, fecha: str):
+    return MovimientoService.Crear_movimiento(id, producto_id, tipo, cantidad, fecha)
 
 # Listar historial de movimientos
 @router.get("/", response_model=List[MovimientoOut])
-def listar_movimientos(db: Session = Depends(get_db)):
-    return MovimientoService.listar_movimientos(db)
+
+def listar_movimientos(id: int, producto_id: int, fecha_inicio: str, fecha_fin: str):
+    return MovimientoService.Listar_movimientos(id, producto_id, fecha_inicio, fecha_fin)
 
 # Obtener movimientos de un producto específico
 @router.get("/producto/{producto_id}", response_model=List[MovimientoOut])
-def obtener_por_producto(producto_id: int, db: Session = Depends(get_db)):
-    return MovimientoService.get_by_product(db, producto_id)
+
+def obtener_por_producto(producto_id: int):
+    return MovimientoService.Obtener_por_producto(producto_id)
 
 # Obtener un movimiento por su ID único
 @router.get("/{id}", response_model=MovimientoOut)
-def obtener_movimiento(id: int, db: Session = Depends(get_db)):
-    db_mov = MovimientoService.get_by_id(db, id)
-    if not db_mov:
-        raise HTTPException(status_code=404, detail="Movimiento no encontrado")
-    return db_mov
+
+def obtener_movimiento_por_id(id: int):
+    return MovimientoService.Obtener_movimiento(id)

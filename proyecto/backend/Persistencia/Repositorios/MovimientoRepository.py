@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from proyecto.backend.Entidades.Movimiento import Movimiento
-from proyecto.backend.database import obtener_conexion
+from Entidades.Movimiento import Movimiento
+from database import obtener_conexion
 
 
 class MovimientoRepository:

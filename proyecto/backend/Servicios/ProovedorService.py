@@ -1,4 +1,4 @@
-from proyecto.backend.Persistencia.Repositorios.ProovedorRepository import ProovedorRepository
+from Persistencia.Repositorios.ProovedorRepository import ProovedorRepository
 
 
 class ProovedorService:

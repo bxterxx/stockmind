@@ -1,11 +1,8 @@
 from sqlalchemy import Column, Float, ForeignKey, Integer, String
 
-from Entidades import categoria
+from Entidades import Categoria
 
-from sqlalchemy.orm import relationship, declarative_base   
-
-Base = declarative_base()
-class producto(Base):
+class producto:
     __tablename__ = "Productos"
     
     id = Column(Integer, primary_key=True, index=True)

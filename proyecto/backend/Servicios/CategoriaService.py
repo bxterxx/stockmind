@@ -1,4 +1,4 @@
-from proyecto.backend.Persistencia.Repositorios.CategoriaRepository import CategoriaRepository
+from Persistencia.Repositorios.CategoriaRepository import CategoriaRepository
 
 
 class CategoriaService:

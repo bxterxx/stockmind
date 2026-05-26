@@ -1,9 +1,8 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from proyecto.backend.Entidades.Productos import Base
 
 
-class Proveedor(Base):
+class Proveedor:
     __tablename__ = "Proveedores"
 
     id = Column(Integer, primary_key=True, index=True)

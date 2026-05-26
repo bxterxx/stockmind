@@ -1,9 +1,8 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from database import Base
 
-class Movimiento(Base):
+class Movimiento:
     __tablename__ = "Movimientos"
 
     id = Column(Integer, primary_key=True, index=True)

@@ -1,4 +1,4 @@
-from proyecto.backend.Persistencia.Repositorios.UsuarioRepository import UsuarioRepository
+from Persistencia.Repositorios.UsuarioRepository import UsuarioRepository
 
 
 class UsuarioService:
@@ -22,7 +22,7 @@ class UsuarioService:
         else:
             return {"message": "Credenciales inválidas"}
         
-    def ver_perfil(self, id: int):
+    def Ver_perfil(self, id: int):
         usuario = self.repositorio.ver_perfil(id)
         if usuario:
             return usuario

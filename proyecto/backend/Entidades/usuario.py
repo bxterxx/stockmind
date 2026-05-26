@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, Boolean
-from database import Base
+from sqlalchemy import Column, Integer, String
 
-class Usuario(Base):
+class Usuario:
     __tablename__ = "Usuarios"
 
     id = Column(Integer, primary_key=True, index=True)

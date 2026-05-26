@@ -1,4 +1,4 @@
-from proyecto.backend.Persistencia.Repositorios.MovimientoRepository import MovimientoRepository
+from Persistencia.Repositorios.MovimientoRepository import MovimientoRepository
 
 
 class MovimientoService:

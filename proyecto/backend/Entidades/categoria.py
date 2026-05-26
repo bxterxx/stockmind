@@ -1,10 +1,8 @@
 from sqlalchemy import Column, Integer, String
 
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy.orm import relationship
 
-Base = declarative_base()
-
-class categoria(Base):
+class categoria:
     __tablename__ = "Categorias"
 
     id = Column(Integer, primary_key=True, index=True)

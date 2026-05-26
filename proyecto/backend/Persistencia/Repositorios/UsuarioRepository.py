@@ -1,5 +1,5 @@
-from proyecto.backend.Entidades.Usuario import Usuario
-from proyecto.backend.database import obtener_conexion
+from Entidades.Usuario import Usuario
+from database import obtener_conexion
 
 
 class UsuarioRepository:

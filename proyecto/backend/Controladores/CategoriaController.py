@@ -1,11 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, status
 from typing import List
 
-# Importaciones siguiendo tu estructura de carpetas
-from database import get_db
-from proyecto.backend.Servicios.CategoriaService import CategoriaService
-from proyecto.backend.Esquemas.CategoriaSchema import CategoriaCreate, CategoriaOut # Deberás crear este archivo
+from Servicios.CategoriaService import CategoriaService
+from Esquemas.CategoriaSchema import CategoriaOut 
 
 router = APIRouter(
     prefix="/categorias",
@@ -20,7 +17,7 @@ def obtener_todas_categorias(nombre: str = None):
 # obtener una categoría por ID
 @router.get("/{id}", response_model=CategoriaOut)
 def obtener_categoria_por_id(id: int):
-    categoria = CategoriaService.Obtener_categorias_por_id(id)
+    categoria = CategoriaService.Obtener_categoria_por_id(id)
     if not categoria:
         raise HTTPException(status_code=404, detail="Categoría no encontrada")
     return categoria

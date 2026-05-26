@@ -1,5 +1,5 @@
-from proyecto.backend.Entidades.Proovedor import Proveedor
-from proyecto.backend.database import obtener_conexion
+from Entidades.Proovedor import Proveedor
+from database import obtener_conexion
 
 
 class ProovedorRepository: 

@@ -1,4 +1,4 @@
-from proyecto.backend.database import obtener_conexion
+from database import obtener_conexion
 
 
 class CategoriaRepository:

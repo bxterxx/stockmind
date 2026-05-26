@@ -1,28 +1,29 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from database import get_db
-from proyecto.backend.Servicios import UsuarioService
-from proyecto.backend.Esquemas.UsuarioSchema import UsuarioCreate, UsuarioOut, LoginSchema
+from fastapi import APIRouter, HTTPException
+from Servicios.UsuarioService import UsuarioService
+from Esquemas.UsuarioSchema import  UsuarioOut, LoginSchema
 
 router = APIRouter(prefix="/usuarios", tags=["Usuarios"])
 
 #  Registrar usuario
 @router.post("/registro", response_model=UsuarioOut)
-def registrar_usuario(data: UsuarioCreate, db: Session = Depends(get_db)):
-    return UsuarioService.create_user(db, data)
+
+def registrar_usuario(id: int, nombre_completo: str, username: str, password: str, rol: str):
+    return UsuarioService.Crear_usuario(id, nombre_completo, username, password, rol)
 
 # Login (Simulado)
 @router.post("/login")
-def login(data: LoginSchema, db: Session = Depends(get_db)):
-    user = UsuarioService.authenticate(db, data.username, data.password)
+
+def login(id: int, username: str, password: str):
+    user = UsuarioService.Login(id, username, password)
     if not user:
-        raise HTTPException(status_code=401, detail="Credenciales incorrectas")
-    return {"message": "Login exitoso", "user": user.username}
+        raise HTTPException(status_code=401, detail="Credenciales inválidas")
+    return {"message": "Login exitoso", "usuario": user}
 
 # Obtener perfil propio (Extra)
 @router.get("/{id}", response_model=UsuarioOut)
-def ver_perfil(id: int, db: Session = Depends(get_db)):
-    user = UsuarioService.get_by_id(db, id)
+
+def ver_perfil(id: int):
+    user = UsuarioService.Ver_perfil(id)
     if not user:
-        raise HTTPException(status_code=404, detail="Usuario no existe")
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
     return user

@@ -1,4 +1,4 @@
-from proyecto.backend.Persistencia.Repositorios.ProductoRepository import ProductoRepository
+from Persistencia.Repositorios.ProductoRepository import ProductoRepository
 
 
 class ProductoService:

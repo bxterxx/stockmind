@@ -1,5 +1,5 @@
-from proyecto.backend.Entidades import Productos
-from proyecto.backend.database import obtener_conexion
+from Entidades import Productos
+from database import obtener_conexion
 
 
 class ProductoRepository:

@@ -1,12 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, status
 from typing import List
-from proyecto.backend.Entidades import Productos
-
-# Importas tus propios módulos
-from database import obtener_conexion
-from proyecto.backend.Esquemas.ProductoSchema import ProductoCreate, ProductoOut
-from proyecto.backend.Servicios.ProductoService import ProductoService
+from Esquemas.ProductoSchema import ProductoOut
+from Servicios.ProductoService import ProductoService
 
 router = APIRouter(
     prefix="/productos",
