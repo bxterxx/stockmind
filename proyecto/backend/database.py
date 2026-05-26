@@ -1,27 +1,17 @@
 import os
 
-from dotenv import load_dotenv
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+import psycopg2
 
-load_dotenv()
-
-host= os.getenv("DB_HOST"),
-database= os.getenv("DB_NAME"),
-user= os.getenv("DB_USER"),
-password= os.getenv("DB_PASSWORD"),
-port= os.getenv("DB_PORT")
-
-DATABASE_URL = f"postgresql://{user}:{password}@{host}:{port}/{database}"
-
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
-    
 def obtener_conexion():
-    db = SessionLocal()
     try:
-        yield db
-    finally:
-        db.close()
+        conexion = psycopg2.connect(
+            host=os.getenv("DB_HOST"),
+            database=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            port=os.getenv("DB_PORT", "5432")
+        )
+        return conexion
+    except Exception as e:
+        print("Error al conectar con la base de datos de Postgres:", e)
+        return None

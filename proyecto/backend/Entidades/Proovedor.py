@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from producto import Base
+from proyecto.backend.Entidades.Productos import Base
 
 
 class Proveedor(Base):

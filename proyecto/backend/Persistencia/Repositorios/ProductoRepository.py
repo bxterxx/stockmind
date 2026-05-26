@@ -1,4 +1,4 @@
-from proyecto.backend.Entidades import producto
+from proyecto.backend.Entidades import Productos
 from proyecto.backend.database import obtener_conexion
 
 

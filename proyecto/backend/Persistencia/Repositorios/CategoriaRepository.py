@@ -1,4 +1,3 @@
-from proyecto.backend.Entidades.categoria import categoria
 from proyecto.backend.database import obtener_conexion
 
 
@@ -23,7 +22,6 @@ class CategoriaRepository:
                 )
                 conn.commit()
                 return {"message": f"Categoría {categoria_id} eliminada correctamente"}    
-                return {"message": f"Categoría con ID {categoria_id} no encontrada"}
             db.delete(categoria_a_eliminar)
             db.commit()
             return {"message": f"Categoría {categoria_id} eliminada correctamente"}    

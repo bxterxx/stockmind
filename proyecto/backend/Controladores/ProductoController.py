@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
-from Entidades import producto
+from proyecto.backend.Entidades import Productos
 
 # Importas tus propios módulos
 from database import get_db
-from Esquemas.producto_schema import ProductoCreate, ProductoOut
+from proyecto.backend.Esquemas.ProductoSchema import ProductoCreate, ProductoOut
 
 router = APIRouter(
     prefix="/productos",
@@ -15,13 +15,13 @@ router = APIRouter(
 #  OBTENER TODOS LOS PRODUCTOS
 @router.get("/", response_model=List[ProductoOut])
 def get_products(db: Session = Depends(get_db), limit: int = 10):
-    products = db.query(producto).limit(limit).all()
+    products = db.query(Productos).limit(limit).all()
     return products
 
 #  CREAR UN PRODUCTO
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=ProductoOut)
 def create_product(payload: ProductoCreate, db: Session = Depends(get_db)):
-    new_product = producto(**payload.dict())
+    new_product = Productos(**payload.dict())
     db.add(new_product)
     db.commit()
     db.refresh(new_product)
@@ -30,7 +30,7 @@ def create_product(payload: ProductoCreate, db: Session = Depends(get_db)):
 # ELIMINAR UN PRODUCTO
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_product(id: int, db: Session = Depends(get_db)):
-    product_query = db.query(producto).filter(producto.id == id)
+    product_query = db.query(Productos).filter(Productos.id == id)
     
     if product_query.first() is None:
         raise HTTPException(status_code=404, detail=f"Producto con id {id} no existe")
