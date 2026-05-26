@@ -2,8 +2,24 @@ from proyecto.backend.database import obtener_conexion
 
 
 class CategoriaRepository:
+    
+    def obtener_categorias(self):
+        with obtener_conexion() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT id, nombre FROM Categorias")
+                categorias = cursor.fetchall()
+                return [{"id": row[0], "nombre": row[1]} for row in categorias]
+            
+    def obtener_categoria_por_id(self, categoria_id: int):
+        with obtener_conexion() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT id, nombre FROM Categorias WHERE id = %s", (categoria_id,))
+                categoria = cursor.fetchone()
+                if categoria:
+                    return {"id": categoria[0], "nombre": categoria[1]}
+                return None
 
-    def Crear_categoria(self, categoria_id: int, nombre: str):
+    def crear_categoria(self, categoria_id: int, nombre: str):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
@@ -13,7 +29,7 @@ class CategoriaRepository:
                 conn.commit()
                 return {"message": f"Categoría {nombre} creada correctamente"}
         
-    def Eliminar_categoria(self, categoria_id: int):
+    def eliminar_categoria(self, categoria_id: int):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
@@ -21,8 +37,5 @@ class CategoriaRepository:
                     (categoria_id,)
                 )
                 conn.commit()
-                return {"message": f"Categoría {categoria_id} eliminada correctamente"}    
-            db.delete(categoria_a_eliminar)
-            db.commit()
-            return {"message": f"Categoría {categoria_id} eliminada correctamente"}    
+                return {"message": f"Categoría {categoria_id} eliminada correctamente"}
         

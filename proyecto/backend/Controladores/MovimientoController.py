@@ -16,7 +16,7 @@ def crear_movimiento(data: MovimientoCreate, db: Session = Depends(get_db)):
 # Listar historial de movimientos
 @router.get("/", response_model=List[MovimientoOut])
 def listar_movimientos(db: Session = Depends(get_db)):
-    return MovimientoService.get_all(db)
+    return MovimientoService.listar_movimientos(db)
 
 # Obtener movimientos de un producto específico
 @router.get("/producto/{producto_id}", response_model=List[MovimientoOut])

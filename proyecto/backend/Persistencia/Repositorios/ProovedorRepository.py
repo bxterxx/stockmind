@@ -1,17 +1,21 @@
 from proyecto.backend.Entidades.Proovedor import Proveedor
+from proyecto.backend.database import obtener_conexion
 
 
 class ProovedorRepository: 
-    def __init__(self, db):
-        self.db = db
-
-    def crear_proveedor(self, id: int, nombre_empresa: str, telefono: str = None):
-        nuevo_proveedor = Proveedor(id=id, nombre_empresa=nombre_empresa, telefono=telefono)
-        self.db.add(nuevo_proveedor)
-        self.db.commit()
+    def listar_prooveedores(self):
+        with obtener_conexion() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT id, nombre_empresa, telefono FROM Proveedores")
+                proveedores = cursor.fetchall()
+                return [{"id": row[0], "nombre_empresa": row[1], "telefono": row[2]} for row in proveedores]
         
-    def obtener_catalogo_proveedor(self, id: int):
-        proveedor = self.db.query(Proveedor).filter(Proveedor.id == id).first()
-        if not proveedor:
-            return {"message": f"Proveedor con ID {id} no encontrado"}
-        return proveedor.productos
+    def crear_proveedor(self, id: int, nombre: str, contacto: str):
+        with obtener_conexion() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    "INSERT INTO Proveedores (id, nombre_empresa, telefono) VALUES (%s, %s, %s)",
+                    (id, nombre, contacto)
+                )
+                conn.commit()
+                return {"id": id, "nombre_empresa": nombre, "telefono": contacto}

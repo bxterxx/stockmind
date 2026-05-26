@@ -4,7 +4,7 @@ from typing import List
 
 # Importaciones siguiendo tu estructura de carpetas
 from database import get_db
-from proyecto.backend.Servicios import CategoriaService
+from proyecto.backend.Servicios.CategoriaService import CategoriaService
 from proyecto.backend.Esquemas.CategoriaSchema import CategoriaCreate, CategoriaOut # Deberás crear este archivo
 
 router = APIRouter(
@@ -14,26 +14,26 @@ router = APIRouter(
 
 # obtener todas las categorías
 @router.get("/", response_model=List[CategoriaOut])
-def read_categorias(db: Session = Depends(get_db)):
-    return CategoriaService.get_all(db)
+def obtener_todas_categorias(nombre: str = None):
+    return CategoriaService.Obtener_categorias(nombre)
 
 # obtener una categoría por ID
 @router.get("/{id}", response_model=CategoriaOut)
-def read_categoria(id: int, db: Session = Depends(get_db)):
-    db_categoria = CategoriaService.get_by_id(db, id)
-    if db_categoria is None:
+def obtener_categoria_por_id(id: int):
+    categoria = CategoriaService.Obtener_categorias_por_id(id)
+    if not categoria:
         raise HTTPException(status_code=404, detail="Categoría no encontrada")
-    return db_categoria
+    return categoria
 
 # crear una nueva categoría
 @router.post("/", response_model=CategoriaOut, status_code=status.HTTP_201_CREATED)
-def create_categoria(categoria: CategoriaCreate, db: Session = Depends(get_db)):
-    return CategoriaService.create(db, categoria)
+def crear_categoria(id: int, nombre: str):
+    return CategoriaService.Crear_categoria(id, nombre)
 
 # eliminar una categoría
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_categoria(id: int, db: Session = Depends(get_db)):
-    success = CategoriaService.delete(db, id)
+def eliminar_categoria(id: int):
+    success = CategoriaService.Eliminar_categoria(id)
     if not success:
         raise HTTPException(status_code=404, detail="No se pudo eliminar: Categoría no encontrada")
     return None

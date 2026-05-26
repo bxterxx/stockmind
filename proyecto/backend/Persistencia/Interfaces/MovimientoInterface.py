@@ -5,9 +5,17 @@ from datetime import datetime
 class MovimientoInterface:
     
     @abstractmethod
-    def registrar_movimiento(self, id: int, Producto_id: int, tipo: str, cantidad: int, fecha: datetime):
+    def crear_movimiento(self, id: int, producto_id: int, tipo: str, cantidad: int, fecha: datetime):
         pass
 
     @abstractmethod
-    def obtener_historial_producto(self, id: int, Producto_id: int, fecha_inicio: datetime, fecha_fin: datetime):
+    def listar_movimientos(self, id: int, producto_id: int, fecha_inicio: datetime, fecha_fin: datetime):
+        pass
+    
+    @abstractmethod
+    def obtener_por_producto(self, producto_id: int):
+        pass
+    
+    @abstractmethod
+    def obtener_movimiento(self, id: int):
         pass
