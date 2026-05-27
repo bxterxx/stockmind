@@ -15,11 +15,11 @@ class ProductoService:
         productos = self.repositorio.obtener_producto_por_id(categoria_id, proveedor_id)
         return productos
         
-    def Crear_producto(self, id: int, nombre: str, categoria_id: int, proveedor_id: int, precio: float, stock: int):
-        if not id or not nombre or not categoria_id or not proveedor_id or precio is None or stock is None:
+    def Crear_producto(self, id: int, nombre: str, precio: float, stock_actual: int, stock_minimo: int, descripcion: str, categoria_id: int, proveedor_id: int):
+        if not id or not nombre or not categoria_id or not proveedor_id or precio is None or stock_actual is None:
             return {"message": "Todos los campos son obligatorios"}
         
-        producto_creado = self.repositorio.crear_producto(id, nombre, categoria_id, proveedor_id, precio, stock)
+        producto_creado = self.repositorio.crear_producto(id, nombre, precio, stock_actual, stock_minimo, descripcion, categoria_id, proveedor_id)
         
         if producto_creado:
             return {"message": f"Producto {nombre} creado correctamente con ID {id}"}

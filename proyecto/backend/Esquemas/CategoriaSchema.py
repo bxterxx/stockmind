@@ -1,9 +1,9 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class CategoriaCreate(BaseModel):
+class CategoriaSchema(BaseModel):
+    id: int
     nombre: str
-    descripcion: Optional[str] = None
     
 class CategoriaOut(BaseModel):
     id: int

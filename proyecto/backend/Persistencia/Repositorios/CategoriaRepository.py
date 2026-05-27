@@ -3,17 +3,17 @@ from database import obtener_conexion
 
 class CategoriaRepository:
     
-    def obtener_categorias(self):
+    def obtener_categorias(self, id: int = None, nombre: str = None):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
-                cursor.execute("SELECT id, nombre FROM Categorias")
+                cursor.execute("SELECT id_categoria, nombre FROM Categorias")
                 categorias = cursor.fetchall()
                 return [{"id": row[0], "nombre": row[1]} for row in categorias]
             
     def obtener_categoria_por_id(self, categoria_id: int):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
-                cursor.execute("SELECT id, nombre FROM Categorias WHERE id = %s", (categoria_id,))
+                cursor.execute("SELECT id_categoria, nombre FROM Categorias WHERE id_categoria = %s", (categoria_id,))
                 categoria = cursor.fetchone()
                 if categoria:
                     return {"id": categoria[0], "nombre": categoria[1]}
@@ -23,7 +23,7 @@ class CategoriaRepository:
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
-                    "INSERT INTO Categorias (id, nombre) VALUES (%s, %s)",
+                    "INSERT INTO Categorias (id_categoria, nombre) VALUES (%s, %s)",
                     (categoria_id, nombre)
                 )
                 conn.commit()
@@ -33,7 +33,7 @@ class CategoriaRepository:
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
-                    "DELETE FROM Categorias WHERE id = %s",
+                    "DELETE FROM Categorias WHERE id_categoria = %s",
                     (categoria_id,)
                 )
                 conn.commit()

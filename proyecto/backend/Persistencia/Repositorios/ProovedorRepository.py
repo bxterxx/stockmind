@@ -6,7 +6,7 @@ class ProovedorRepository:
     def listar_prooveedores(self):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
-                cursor.execute("SELECT id, nombre_empresa, telefono FROM Proveedores")
+                cursor.execute("SELECT id_proveedor, nombre_empresa, telefono FROM Proveedores")
                 proveedores = cursor.fetchall()
                 return [{"id": row[0], "nombre_empresa": row[1], "telefono": row[2]} for row in proveedores]
         
@@ -14,7 +14,7 @@ class ProovedorRepository:
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
-                    "INSERT INTO Proveedores (id, nombre_empresa, telefono) VALUES (%s, %s, %s)",
+                    "INSERT INTO Proveedores (id_proveedor, nombre_empresa, telefono) VALUES (%s, %s, %s)",
                     (id, nombre, contacto)
                 )
                 conn.commit()

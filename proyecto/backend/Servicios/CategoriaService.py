@@ -18,7 +18,7 @@ class CategoriaService:
     def Crear_categoria(self, categoria_id: int, nombre: str):
         if not categoria_id or not nombre:
             return {"message": "El ID y el nombre de la categoría son obligatorios"}    
-        id_creado = self.repositorio.crear_categoria(nombre)
+        id_creado = self.repositorio.crear_categoria(categoria_id, nombre)
         
         if id_creado:
             return {"message": f"Categoría {nombre} creada correctamente con ID {id_creado}"}

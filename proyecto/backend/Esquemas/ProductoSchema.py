@@ -1,19 +1,25 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class ProductoBase(BaseModel):
-    nombre: str
-    descripcion: Optional[str] = None
-    precio: float
-    stock: int
-    categoria_id: int  
-
-class ProductoCreate(ProductoBase):
-    pass 
-
-class ProductoOut(ProductoBase):
+class ProductoSchema(BaseModel):
     id: int
+    nombre: str
+    precio_venta: float
+    stock_actual: int
+    stock_minimo: int
+    descripcion: str
+    categoria_id: int
+    proveedor_id: int
+
+class ProductoOut(BaseModel):
+    id: int
+    nombre: str
+    precio_venta: float
+    stock_actual: int
+    stock_minimo: int
+    descripcion: str
+    categoria_id: int
+    prooveedor_id: int
 
     class Config:
-        # Leer los datos del Entity
         from_attributes = True

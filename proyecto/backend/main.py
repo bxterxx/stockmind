@@ -1,12 +1,32 @@
 from fastapi import FastAPI
-from Controladores import  CategoriaController, ProovedorController, UsuarioController
-from Controladores import ProductoController
-from Controladores import MovimientoController
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+from Controladores.ProductoController import router as router_productos
+from Controladores.CategoriaController import router as router_categorias
+from Controladores.ProovedorController import router as router_proveedores
+from Controladores.MovimientoController import router as router_movimientos
+from Controladores.UsuarioController import router as router_usuarios
 
-app.include_router(ProductoController.router)
-app.include_router(MovimientoController.router)
-app.include_router(UsuarioController.router)
-app.include_router(CategoriaController.router)
-app.include_router(ProovedorController.router)
+app = FastAPI(
+    title="StockMind API",
+    description="Sistema de Gestión de Inventarios",
+    version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(router_productos)
+app.include_router(router_categorias)
+app.include_router(router_proveedores)
+app.include_router(router_movimientos)
+app.include_router(router_usuarios)
+
+@app.get("/")
+def inicio():
+    return {"status": "ok", "message": "Bienvenido a StockMind API. Ve a /docs para ver los endpoints."}

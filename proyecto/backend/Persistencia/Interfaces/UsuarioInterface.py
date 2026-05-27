@@ -11,6 +11,3 @@ class UsuarioInterface:
     def login(self, email: str, contraseña: str):
         pass
     
-    @abstractmethod
-    def ver_perfil(self, email: str):
-        pass
