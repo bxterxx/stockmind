@@ -24,7 +24,7 @@ def obtener_categoria_por_id(id: int):
     return categoria
 
 # crear una nueva categoría
-@router.post("/", response_model=CategoriaOut, status_code=status.HTTP_201_CREATED)
+@router.post("/")
 
 def crear_categoria(categoria: CategoriaSchema = Body(...)):
     return categoria_service.Crear_categoria(categoria.id, categoria.nombre)
@@ -35,4 +35,4 @@ def eliminar_categoria(id: int):
     success = categoria_service.Eliminar_categoria(id)
     if not success:
         raise HTTPException(status_code=404, detail="No se pudo eliminar: Categoría no encontrada")
-    return None
+    return "Categoría eliminada exitosamente"

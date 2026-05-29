@@ -6,13 +6,14 @@ class ProductoRepository:
     def obtener_productos(self):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
-                cursor.execute("SELECT id_producto, nombre, precio_venta, stock_actual, stock_minimo, id_categoria, id_proveedor, descripcion FROM Productos")
+                cursor.execute("SELECT * FROM Productos")
                 productos = cursor.fetchall()
                 return [{"id": row[0], "nombre": row[1], "precio_venta": row[2], "stock_actual": row[3], "stock_minimo": row[4], "categoria_id": row[5], "proveedor_id": row[6], "descripcion": row[7]} for row in productos]
+            
     def obtener_producto_por_id(self, producto_id: int):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
-                cursor.execute("SELECT id_producto, nombre, precio_venta, stock_actual, stock_minimo, id_categoria, id_proveedor, descripcion FROM Productos WHERE id_producto = %s", (producto_id,))
+                cursor.execute("SELECT * FROM Productos WHERE id_producto = %s", (producto_id,))
                 return cursor.fetchone()
     
     def crear_producto(self, producto_id: int, nombre: str, precio_venta: float, stock_actual: int, stock_minimo: int, descripcion: str, categoria_id: int, proveedor_id: int):
@@ -23,7 +24,7 @@ class ProductoRepository:
                     (producto_id, nombre, precio_venta, stock_actual, stock_minimo, descripcion, categoria_id, proveedor_id)
                 )
                 conn.commit()
-                return self.obtener_producto_por_id(producto_id)
+                return {"message": f"Producto {nombre} creado correctamente con ID {producto_id}"}
             
     def eliminar_producto(self, producto_id: int):
         with obtener_conexion() as conn:

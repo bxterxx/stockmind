@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 class ProveedorBase(BaseModel):
-    nombre: str
+    nombre_empresa: str
     contacto: Optional[str] = None
     email: str
     telefono: Optional[str] = None

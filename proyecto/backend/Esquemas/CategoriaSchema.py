@@ -8,7 +8,6 @@ class CategoriaSchema(BaseModel):
 class CategoriaOut(BaseModel):
     id: int
     nombre: str
-    descripcion: Optional[str] = None
 
-    class Config:
-        from_attributes = True
+class Config:
+    from_attributes = True

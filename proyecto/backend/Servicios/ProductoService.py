@@ -5,24 +5,14 @@ class ProductoService:
     def __init__(self):
         self.repositorio = ProductoRepository()
         
-    def Obtener_productos(self, id: int):
-        producto = self.repositorio.obtener_productos(id)
-        if not producto:
-            return {"message": f"Producto con ID {id} no encontrado"}
-        return producto
+    def Obtener_productos(self):
+        return self.repositorio.obtener_productos()
     
-    def Obtener_productos_por_id(self, categoria_id: int = None, proveedor_id: int = None):
-        productos = self.repositorio.obtener_producto_por_id(categoria_id, proveedor_id)
-        return productos
+    def Obtener_productos_por_id(self, id: int):
+        return self.repositorio.obtener_producto_por_id(id)
         
     def Crear_producto(self, id: int, nombre: str, precio: float, stock_actual: int, stock_minimo: int, descripcion: str, categoria_id: int, proveedor_id: int):
-        if not id or not nombre or not categoria_id or not proveedor_id or precio is None or stock_actual is None:
-            return {"message": "Todos los campos son obligatorios"}
-        
-        producto_creado = self.repositorio.crear_producto(id, nombre, precio, stock_actual, stock_minimo, descripcion, categoria_id, proveedor_id)
-        
-        if producto_creado:
-            return {"message": f"Producto {nombre} creado correctamente con ID {id}"}
+        return self.repositorio.crear_producto(id, nombre, precio, stock_actual, stock_minimo, descripcion, categoria_id, proveedor_id)
     
     def Eliminar_producto(self, id: int):
         if not id:

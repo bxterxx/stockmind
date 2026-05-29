@@ -28,5 +28,5 @@ class CategoriaService:
             return {"message": "El ID de la categoría es obligatorio"}
         
         resultado = self.repositorio.eliminar_categoria(categoria_id)
-        return resultado
+        return "Categoría eliminada exitosamente"
     
