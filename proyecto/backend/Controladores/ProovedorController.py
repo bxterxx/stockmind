@@ -13,7 +13,7 @@ def listar_prooveedores():
     return proovedor_service.Listar_proveedores()
 
 # Crear proveedor
-@router.post("/", response_model=ProveedorOut)
+@router.post("/", response_model=None)
 
 def crear_prooveedor(id: int, nombre_empresa: str, telefono: str):
     return proovedor_service.Crear_proveedor(id, nombre_empresa, telefono)

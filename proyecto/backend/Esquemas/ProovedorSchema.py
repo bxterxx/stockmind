@@ -4,8 +4,6 @@ from pydantic import BaseModel
 
 class ProveedorBase(BaseModel):
     nombre_empresa: str
-    contacto: Optional[str] = None
-    email: str
     telefono: Optional[str] = None
 
 class ProveedorCreate(ProveedorBase):

@@ -2,14 +2,18 @@ from pydantic import BaseModel, EmailStr
 
 class UsuarioBase(BaseModel):
     username: str
-    email: EmailStr
-
+    
 class UsuarioCreate(UsuarioBase):
+    username: str
     password: str  # Solo se pide al crear
+    nombre_completo: str
+    rol: str
 
-class UsuarioOut(UsuarioBase):
-    id: int
-    # No se incluye el password
+class UsuarioOut(BaseModel):
+    id_usuario: int
+    nombre_completo: str
+    username: str
+    rol: str
     class Config:
         from_attributes = True
 

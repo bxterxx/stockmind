@@ -3,36 +3,36 @@ from database import obtener_conexion
 
 
 class UsuarioRepository:
-    def crear_usuario(self, nombre: str, email: str, contraseña: str):
+    def crear_usuario(self, id_usuario: int, nombre_completo: str, username: str, password: str, rol: str):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
-                    "INSERT INTO Usuarios (nombre, email, contraseña) VALUES (%s, %s, %s)",
-                    (nombre, email, contraseña)
+                    "INSERT INTO Usuarios (id_usuario, nombre_completo, username, password, rol) VALUES (%s, %s, %s, %s, %s)",
+                    (id_usuario, nombre_completo, username, password, rol)
                 )
                 conn.commit()
-                return {"nombre": nombre, "email": email, "contraseña": contraseña}
+                return True
 
-    def login(self, email: str, contraseña: str):
+    def login(self, username: str, password: str):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
-                    "SELECT id, nombre, email FROM Usuarios WHERE email = %s AND contraseña = %s",
-                    (email, contraseña)
+                    "SELECT id_usuario, nombre_completo, username FROM Usuarios WHERE username = %s AND password = %s",
+                    (username, password)
                 )
                 usuario = cursor.fetchone()
                 if usuario:
-                    return {"id": usuario[0], "nombre": usuario[1], "email": usuario[2]}
+                    return {"id_usuario": usuario[0], "nombre_completo": usuario[1], "username": usuario[2]}
                 return None
 
-    def ver_perfil(self, usuario_id: int):
+    def ver_perfil(self, id_usuario: int):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
-                    "SELECT id, nombre, email FROM Usuarios WHERE id = %s",
-                    (usuario_id,)
+                    "SELECT id_usuario, nombre_completo, username FROM Usuarios WHERE id_usuario = %s",
+                    (id_usuario,)
                 )
                 usuario = cursor.fetchone()
                 if usuario:
-                    return {"id": usuario[0], "nombre": usuario[1], "email": usuario[2]}
+                    return {"id_usuario": usuario[0], "nombre_completo": usuario[1], "username": usuario[2]}
                 return None

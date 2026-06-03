@@ -1,19 +1,21 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+from typing import Union
 
 class MovimientoBase(BaseModel):
     producto_id: int
     cantidad: int
     tipo: str  # "ENTRADA" o "SALIDA"
-    motivo: Optional[str] = None
 
 class MovimientoCreate(MovimientoBase):
     pass
 
 class MovimientoOut(MovimientoBase):
     id: int
-    fecha: datetime # Se genera automáticamente en la DB
+    producto_id: int
+    tipo: str
+    cantidad: int
+    fecha: Union[datetime, str]
 
     class Config:
         from_attributes = True
