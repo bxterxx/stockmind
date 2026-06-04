@@ -23,8 +23,8 @@ class MovimientoService:
         else:
             return {"message": "Error al crear el movimiento"}
         
-    def Listar_movimientos(self, id: int, producto_id: int, id_usuario: int, fecha_inicio: datetime, fecha_fin: datetime):
-        movimientos = self.repositorio.listar_movimientos(id, producto_id, id_usuario, fecha_inicio, fecha_fin)
+    def Listar_movimientos(self):
+        movimientos = self.repositorio.listar_movimientos()
         return movimientos
     
     def Obtener_por_producto(self, producto_id: int):
@@ -36,3 +36,7 @@ class MovimientoService:
         if movimiento:
             return movimiento
         return {"message": f"Movimiento con ID {id} no encontrado"}
+    
+    def Eliminar_movimiento(self, id: int):
+        success = self.repositorio.eliminar_movimiento(id)
+        return success

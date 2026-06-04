@@ -17,16 +17,6 @@ class UsuarioService:
                 "username": username,
                 "rol": rol
             }
-    
-    def Login(self, email: str, contraseña: str):
-        if not email or not contraseña:
-            return {"message": "El email y la contraseña son obligatorios"}
-        
-        usuario = self.repositorio.login(email, contraseña)
-        if usuario:
-            return {"message": f"Usuario {usuario} autenticado correctamente"}
-        else:
-            return {"message": "Credenciales inválidas"}
         
     def Ver_perfil(self, id_usuario: int):
         usuario = self.repositorio.ver_perfil(id_usuario)

@@ -15,3 +15,7 @@ class ProovedorService:
         
         self.repositorio.crear_proveedor(id, nombre_empresa, telefono)
         return {"message": f"Proveedor {nombre_empresa} creado correctamente con ID {id}"}
+    
+    def Eliminar_proveedor(self, id: int):
+        success = self.repositorio.eliminar_proveedor(id)
+        return success

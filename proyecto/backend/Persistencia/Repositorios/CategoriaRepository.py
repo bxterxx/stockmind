@@ -27,7 +27,7 @@ class CategoriaRepository:
                     (categoria_id, nombre)
                 )
                 conn.commit()
-                return {"message": f"Categoría {nombre} creada correctamente"}
+            return True
         
     def eliminar_categoria(self, categoria_id: int):
         with obtener_conexion() as conn:
@@ -36,6 +36,7 @@ class CategoriaRepository:
                     "DELETE FROM Categorias WHERE id_categoria = %s",
                     (categoria_id,)
                 )
-                conn.commit()
-                return {"message": f"Categoría {categoria_id} eliminada correctamente"}
+                affected_rows = cursor.rowcount
+            conn.commit()
+            return affected_rows > 0
         

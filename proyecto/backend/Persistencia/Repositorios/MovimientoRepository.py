@@ -13,16 +13,26 @@ class MovimientoRepository:
                     "INSERT INTO Movimientos (id_movimiento, id_producto, id_usuario, tipo, cantidad, fecha) VALUES (%s, %s, %s, %s, %s, %s)",
                     (id, producto_id, id_usuario, tipo, cantidad, fecha)
                 )
+                return True
     
-    def listar_movimientos(self, id: int, producto_id: int, fecha_inicio: datetime, fecha_fin: datetime):
+    def listar_movimientos(self):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
-                    "SELECT id_movimiento, id_producto, id_usuario, tipo, cantidad, fecha FROM Movimientos WHERE id_producto = %s AND fecha BETWEEN %s AND %s",
-                    (producto_id, fecha_inicio, fecha_fin)
+                    "SELECT id_movimiento, id_producto, id_usuario, tipo, cantidad, fecha FROM Movimientos",
                 )
                 movimientos = cursor.fetchall()
-                return [{"id": row[0], "id_producto": row[1], "id_usuario": row[2], "tipo": row[3], "cantidad": row[4], "fecha": row[5]} for row in movimientos]
+                return [
+                {
+                    "id": row[0],
+                    "producto_id": row[1],
+                    "id_usuario": row[2],
+                    "tipo": row[3],
+                    "cantidad": row[4],
+                    "fecha": str(row[5])
+                } 
+                for row in movimientos
+            ]
 
     def obtener_por_producto(self, producto_id: int):
         with obtener_conexion() as conn:
@@ -32,7 +42,7 @@ class MovimientoRepository:
                     (producto_id,)
                 )
                 movimientos = cursor.fetchall()
-                return [{"id": row[0], "id_producto": row[1], "id_usuario": row[2], "tipo": row[3], "cantidad": row[4], "fecha": row[5]} for row in movimientos]
+                return [{"id": row[0], "producto_id": row[1], "id_usuario": row[2], "tipo": row[3], "cantidad": row[4], "fecha": str(row[5])} for row in movimientos]
 
     def obtener_movimiento(self, id: int):
         with obtener_conexion() as conn:
@@ -43,5 +53,13 @@ class MovimientoRepository:
                 )
                 row = cursor.fetchone()
                 if row:
-                    return {"id": row[0], "id_producto": row[1], "id_usuario": row[2], "tipo": row[3], "cantidad": row[4], "fecha": row[5]}
+                    return {"id": row[0], "producto_id": row[1], "id_usuario": row[2], "tipo": row[3], "cantidad": row[4], "fecha": str(row[5])}
                 return None
+    
+    def eliminar_movimiento(self, id: int):
+        with obtener_conexion() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("DELETE FROM Movimientos WHERE id_movimiento = %s", (id,))
+                affected_rows = cursor.rowcount
+            conn.commit()
+            return affected_rows > 0

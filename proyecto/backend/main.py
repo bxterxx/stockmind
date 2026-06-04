@@ -26,7 +26,3 @@ app.include_router(router_categorias)
 app.include_router(router_proveedores)
 app.include_router(router_movimientos)
 app.include_router(router_usuarios)
-
-@app.get("/")
-def inicio():
-    return {"status": "ok", "message": "Bienvenido a StockMind API. Ve a /docs para ver los endpoints."}

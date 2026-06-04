@@ -21,7 +21,7 @@ class CategoriaService:
         id_creado = self.repositorio.crear_categoria(categoria_id, nombre)
         
         if id_creado:
-            return {"message": f"Categoría {nombre} creada correctamente con ID {id_creado}"}
+            return {"message": f"Categoría {nombre} creada correctamente", "id": categoria_id, "nombre": nombre}
         
     def Eliminar_categoria(self, categoria_id: int):
         if not categoria_id:

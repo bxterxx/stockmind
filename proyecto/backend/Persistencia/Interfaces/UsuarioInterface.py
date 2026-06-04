@@ -8,6 +8,6 @@ class UsuarioInterface:
         pass
 
     @abstractmethod
-    def login(self, email: str, contraseña: str):
+    def ver_perfil(self, id_usuario: int):
         pass
     

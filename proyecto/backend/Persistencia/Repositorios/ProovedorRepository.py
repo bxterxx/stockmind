@@ -19,3 +19,11 @@ class ProovedorRepository:
                 )
                 conn.commit()
                 return {"id": id, "nombre_empresa": nombre, "telefono": contacto}
+    
+    def eliminar_proveedor(self, id: int):
+        with obtener_conexion() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("DELETE FROM Proveedores WHERE id_proveedor = %s", (id,))
+                affected_rows = cursor.rowcount
+            conn.commit()
+            return affected_rows > 0

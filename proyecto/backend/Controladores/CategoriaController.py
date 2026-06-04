@@ -1,8 +1,5 @@
-from fastapi import APIRouter, Body, HTTPException, status
-from typing import List
-
+from fastapi import APIRouter, Body, HTTPException
 from Servicios.CategoriaService import CategoriaService
-from Esquemas.CategoriaSchema import CategoriaOut, CategoriaSchema 
 
 router = APIRouter(
     prefix="/categorias",
@@ -11,12 +8,12 @@ router = APIRouter(
 categoria_service = CategoriaService()
 
 # obtener todas las categorías
-@router.get("/", response_model=List[CategoriaOut])
+@router.get("/")
 def obtener_todas_categorias():
     return categoria_service.Obtener_categorias()
 
 # obtener una categoría por ID
-@router.get("/{id}", response_model=CategoriaOut)
+@router.get("/{id}")
 def obtener_categoria_por_id(id: int):
     categoria = categoria_service.Obtener_categoria_por_id(id)
     if not categoria:
@@ -26,11 +23,11 @@ def obtener_categoria_por_id(id: int):
 # crear una nueva categoría
 @router.post("/")
 
-def crear_categoria(categoria: CategoriaSchema = Body(...)):
-    return categoria_service.Crear_categoria(categoria.id, categoria.nombre)
+def crear_categoria(id: int, nombre: str):
+    return categoria_service.Crear_categoria(id, nombre)
 
 # eliminar una categoría
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}")
 def eliminar_categoria(id: int):
     success = categoria_service.Eliminar_categoria(id)
     if not success:
