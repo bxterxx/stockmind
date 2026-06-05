@@ -1,13 +1,12 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
 
-class UsuarioInterface:
-    
+class UsuarioInterface(ABC):
+
     @abstractmethod
-    def crear_usuario(self, nombre: str, email: str, contraseña: str):
+    def crear_usuario(self, id_usuario: int, nombre_completo: str, username: str, password: str, rol: str):
         pass
 
     @abstractmethod
     def ver_perfil(self, id_usuario: int):
         pass
-    

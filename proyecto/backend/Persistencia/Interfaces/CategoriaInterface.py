@@ -1,15 +1,19 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
-class CategoriaInterface:
-    
+
+class CategoriaInterface(ABC):
     @abstractmethod
-    def obtener_categorias(self): pass
-    
+    def obtener_categorias(self):
+        pass
+
     @abstractmethod
-    def obtener_categoria_por_id(self, categoria_id: int): pass
-    
+    def obtener_categoria_por_id(self, categoria_id: int):
+        pass
+
     @abstractmethod
-    def crear_categoria(self, categoria_id: int, nombre: str): pass
-    
+    def crear_categoria(self, categoria_id: int, nombre: str):
+        pass
+
     @abstractmethod
-    def eliminar_categoria(self, categoria_id: int): pass
+    def eliminar_categoria(self, categoria_id: int):
+        pass

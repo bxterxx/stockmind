@@ -1,8 +1,9 @@
+from Persistencia.Interfaces.ProovedorInterface import ProovedorInterface
 from Entidades.Proovedor import Proveedor
 from database import obtener_conexion
 
 
-class ProovedorRepository: 
+class ProovedorRepository(ProovedorInterface): 
     def listar_prooveedores(self):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:

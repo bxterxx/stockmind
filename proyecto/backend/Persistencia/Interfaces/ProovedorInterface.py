@@ -1,12 +1,12 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
 
-class ProovedorInterface:
-    
+class ProovedorInterface(ABC):
+
     @abstractmethod
-    def listar_proveedores(self):
+    def listar_prooveedores(self):
         pass
-    
+
     @abstractmethod
     def crear_proveedor(self, id: int, nombre: str, contacto: str):
         pass

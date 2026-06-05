@@ -1,15 +1,16 @@
+from Persistencia.Interfaces.ProductoInterface import ProductoInterface
 from Entidades import Productos
 from database import obtener_conexion
 
 
-class ProductoRepository:
+class ProductoRepository(ProductoInterface):
     def obtener_productos(self):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
                 cursor.execute("SELECT * FROM Productos")
                 productos = cursor.fetchall()
                 return [{"id": row[0], "nombre": row[1], "precio_venta": row[2], "stock_actual": row[3], "stock_minimo": row[4], "categoria_id": row[5], "proveedor_id": row[6], "descripcion": row[7]} for row in productos]
-            
+
     def obtener_producto_por_id(self, producto_id: int):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
@@ -26,7 +27,7 @@ class ProductoRepository:
                 )
             conn.commit()
             return {"message": f"Producto {nombre} creado correctamente con ID {producto_id}"}
-            
+
     def eliminar_producto(self, producto_id: int):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:

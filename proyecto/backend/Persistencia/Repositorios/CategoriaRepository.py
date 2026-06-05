@@ -1,7 +1,8 @@
+from Persistencia.Interfaces.CategoriaInterface import CategoriaInterface
 from database import obtener_conexion
 
 
-class CategoriaRepository:
+class CategoriaRepository(CategoriaInterface):
     
     def obtener_categorias(self, id: int = None, nombre: str = None):
         with obtener_conexion() as conn:
@@ -39,4 +40,3 @@ class CategoriaRepository:
                 affected_rows = cursor.rowcount
             conn.commit()
             return affected_rows > 0
-        

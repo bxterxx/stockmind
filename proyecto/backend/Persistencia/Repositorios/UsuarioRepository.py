@@ -1,8 +1,9 @@
+from Persistencia.Interfaces.UsuarioInterface import UsuarioInterface
 from Entidades.Usuario import Usuario
 from database import obtener_conexion
 
 
-class UsuarioRepository:
+class UsuarioRepository(UsuarioInterface):
     def crear_usuario(self, id_usuario: int, nombre_completo: str, username: str, password: str, rol: str):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
@@ -12,7 +13,7 @@ class UsuarioRepository:
                 )
                 conn.commit()
                 return True
-            
+
     def ver_perfil(self, id_usuario: int):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
