@@ -10,3 +10,11 @@ class UsuarioInterface(ABC):
     @abstractmethod
     def ver_perfil(self, id_usuario: int):
         pass
+    
+    @abstractmethod
+    def eliminar_usuario(self, id_usuario: int):
+        pass
+    
+    @abstractmethod
+    def listar_usuarios(self):
+        pass

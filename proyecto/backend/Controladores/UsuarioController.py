@@ -20,3 +20,17 @@ def ver_perfil(id_usuario: int):
     if not usuario:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     return usuario
+
+@router.delete("/{id_usuario}")
+
+def eliminar_usuario(id_usuario: int):
+    resultado = usuario_service.Eliminar_usuario(id_usuario)
+    if resultado:
+        return {"message": f"Usuario con ID {id_usuario} eliminado exitosamente"}
+    else:
+        raise HTTPException(status_code=404, detail=f"Usuario con ID {id_usuario} no encontrado")
+    
+@router.get("/")
+def listar_usuarios():
+    usuarios = usuario_service.repositorio.listar_usuarios()
+    return usuarios

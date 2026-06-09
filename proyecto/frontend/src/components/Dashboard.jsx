@@ -9,6 +9,8 @@ export const Dashboard = () => {
     proveedores: 0,
     movimientos: 0,
   });
+  // 1. Nuevo estado para guardar los productos con bajo stock
+  const [alertasStock, setAlertasStock] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -32,8 +34,16 @@ export const Dashboard = () => {
         proveedores: proveedoresData.length,
         movimientos: movimientosData.length,
       });
+
+      // 2. Lógica para filtrar los productos con stock por debajo del mínimo
+      const productosBajoStock = productosData.filter(
+        (prod) => parseInt(prod.stock_actual) < parseInt(prod.stock_minimo)
+      );
+      setAlertasStock(productosBajoStock); // Guardamos las alertas
+
+      setError(null);
     } catch (err) {
-      setError(err.message);
+      setError("Error al cargar el resumen de estadísticas.");
     } finally {
       setLoading(false);
     }
@@ -43,8 +53,40 @@ export const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <h2>📊 Panel de Control</h2>
+      <h1 style={{ 
+        fontSize: '2.5rem', 
+        marginBottom: '20px', 
+        fontWeight: 'bold', 
+        textAlign: 'center', 
+        color: 'white' 
+      }}>
+        📊 Panel de Control
+      </h1>
+      
       {error && <div className="error">{error}</div>}
+
+      {/* 3. Notificación de Stock Bajo (Solo aparece si hay alertas) */}
+      {alertasStock.length > 0 && (
+        <div style={{ 
+          backgroundColor: '#ff9800', 
+          color: 'white', 
+          padding: '15px 20px', 
+          borderRadius: '8px', 
+          marginBottom: '25px',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+        }}>
+          <h3 style={{ margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            ⚠️ Alerta: Productos con stock bajo
+          </h3>
+          <ul style={{ margin: 0, paddingLeft: '20px' }}>
+            {alertasStock.map((prod) => (
+              <li key={prod.id || prod.id_producto} style={{ marginBottom: '5px' }}>
+                <strong>{prod.nombre}</strong> - Stock actual: <strong>{prod.stock_actual}</strong> (Mínimo requerido: {prod.stock_minimo})
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       
       <div className="stats-grid">
         <div className="stat-card">
@@ -92,4 +134,4 @@ export const Dashboard = () => {
       </div>
     </div>
   );
-};
+}

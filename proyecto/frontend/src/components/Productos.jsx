@@ -12,6 +12,7 @@ export const Productos = () => {
   const [showBuscar, setShowBuscar] = useState(false);
   const [detalleProducto, setDetalleProducto] = useState(null);
   const [buscarId, setBuscarId] = useState("");
+  const [noEncontrado, setNoEncontrado] = useState(false);
   const [formData, setFormData] = useState({
     id_producto: "",
     nombre: "",
@@ -39,7 +40,7 @@ export const Productos = () => {
       setCategorias(categoriasData);
       setProveedores(proveedoresData);
     } catch (err) {
-      setError(err.message);
+      setError("Error al cargar los datos iniciales.");
     } finally {
       setLoading(false);
     }
@@ -47,10 +48,7 @@ export const Productos = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -67,29 +65,24 @@ export const Productos = () => {
         proveedor_id: parseInt(formData.proveedor_id),
       });
       setFormData({
-        id_producto: "",
-        nombre: "",
-        precio_venta: "",
-        stock_actual: "",
-        stock_minimo: "",
-        descripcion: "",
-        categoria_id: "",
-        proveedor_id: "",
+        id_producto: "", nombre: "", precio_venta: "", stock_actual: "",
+        stock_minimo: "", descripcion: "", categoria_id: "", proveedor_id: ""
       });
       setShowForm(false);
       cargarDatos();
     } catch (err) {
-      setError(err.message);
+      setError("No se pudo guardar el producto.");
     }
   };
 
   const handleEliminar = async (id) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar este producto?")) {
       try {
+        setError(null);
         await productosAPI.eliminar(id);
         cargarDatos();
       } catch (err) {
-        setError(err.message);
+        setError("⚠️ No se puede eliminar este producto porque cuenta con movimientos de inventario registrados.");
       }
     }
   };
@@ -100,11 +93,20 @@ export const Productos = () => {
       return;
     }
     try {
-      const producto = await productosAPI.obtenerPorId(parseInt(buscarId));
-      setDetalleProducto(producto);
-    } catch (err) {
-      setError(err.message);
+      setError(null);
+      setNoEncontrado(false);
       setDetalleProducto(null);
+
+      const producto = await productosAPI.obtenerPorId(parseInt(buscarId));
+      if (producto && (producto.id || producto.id_producto)) {
+        setDetalleProducto(producto);
+      } else {
+        setDetalleProducto(null);
+        setNoEncontrado(true);
+      }
+    } catch (err) {
+      setDetalleProducto(null);
+      setNoEncontrado(true);
     }
   };
 
@@ -115,13 +117,45 @@ export const Productos = () => {
       <h2>📦 Gestión de Productos</h2>
       {error && <div className="error">{error}</div>}
       
-      <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
-        {showForm ? "Cancelar" : "+ Nuevo Producto"}
-      </button>
+      <div style={{ display: 'flex', gap: '15px', marginBottom: '20px', alignItems: 'center' }}>
+        <button 
+          className="btn-primary" 
+          onClick={() => {
+            setShowForm(!showForm);
+            setError(null);
+            if(showBuscar) setShowBuscar(false);
+          }}
+          style={{ 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: '8px',
+            backgroundColor: showForm ? '#d32f2f' : '',
+            borderColor: showForm ? '#d32f2f' : ''
+          }}
+        >
+          {showForm ? "Cancelar" : "+ Nuevo Producto"}
+        </button>
 
-      <button className="btn-secondary" onClick={() => setShowBuscar(!showBuscar)}>
-        {showBuscar ? "Cancelar" : "🔍 Ver Detalles"}
-      </button>
+        <button 
+          className={showBuscar ? "btn-primary" : "btn-secondary"} 
+          onClick={() => {
+            setShowBuscar(!showBuscar);
+            setNoEncontrado(false);
+            setError(null);
+            setDetalleProducto(null);
+            if(showForm) setShowForm(false);
+          }}
+          style={{ 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: '8px',
+            backgroundColor: showBuscar ? '#d32f2f' : '',
+            borderColor: showBuscar ? '#d32f2f' : ''
+          }}
+        >
+          {showBuscar ? "Cancelar" : "🔍 Ver Detalles"}
+        </button>
+      </div>
 
       {showForm && (
         <form onSubmit={handleSubmit} className="form">
@@ -183,14 +217,12 @@ export const Productos = () => {
               placeholder="Ingresa el ID del producto"
             />
           </div>
-          <button className="btn-primary" onClick={handleBuscarPorId}>
-            Buscar
-          </button>
+          <button className="btn-primary" onClick={handleBuscarPorId}>Buscar</button>
 
-          {detalleProducto && (
-            <div className="perfil-info">
+          {detalleProducto && (detalleProducto.id || detalleProducto.id_producto) && (
+            <div className="perfil-info" style={{ marginTop: '15px' }}>
               <h4>Detalles del Producto</h4>
-              <p><strong>ID:</strong> {detalleProducto.id}</p>
+              <p><strong>ID:</strong> {detalleProducto.id ? detalleProducto.id : detalleProducto.id_producto}</p>
               <p><strong>Nombre:</strong> {detalleProducto.nombre}</p>
               <p><strong>Precio:</strong> ${detalleProducto.precio_venta}</p>
               <p><strong>Stock Actual:</strong> {detalleProducto.stock_actual}</p>
@@ -198,6 +230,12 @@ export const Productos = () => {
               <p><strong>Descripción:</strong> {detalleProducto.descripcion}</p>
               <p><strong>Categoría ID:</strong> {detalleProducto.categoria_id}</p>
               <p><strong>Proveedor ID:</strong> {detalleProducto.proveedor_id}</p>
+            </div>
+          )}
+
+          {noEncontrado && (
+            <div className="error" style={{ marginTop: '15px', backgroundColor: '#ffebee', color: '#c62828', padding: '10px', borderRadius: '4px' }}>
+              ⚠️ El producto con ID <strong>{buscarId}</strong> no existe en el sistema.
             </div>
           )}
         </div>
@@ -229,9 +267,7 @@ export const Productos = () => {
                   <td>{prod.stock_minimo}</td>
                   <td>{prod.descripcion}</td>
                   <td>
-                    <button className="btn-danger" onClick={() => handleEliminar(prod.id)}>
-                      Eliminar
-                    </button>
+                    <button className="btn-danger" onClick={() => handleEliminar(prod.id)}>Eliminar</button>
                   </td>
                 </tr>
               ))}
@@ -241,4 +277,4 @@ export const Productos = () => {
       )}
     </div>
   );
-};
+}

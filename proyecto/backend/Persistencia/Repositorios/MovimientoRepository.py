@@ -14,8 +14,20 @@ class MovimientoRepository(MovimientoInterface):
                     "INSERT INTO Movimientos (id_movimiento, id_producto, id_usuario, tipo, cantidad, fecha) VALUES (%s, %s, %s, %s, %s, %s)",
                     (id, producto_id, id_usuario, tipo, cantidad, fecha)
                 )
+                conn.commit()
                 return True
-
+            
+    def actualizar_stock(self, producto_id: int, cantidad: int):
+        with obtener_conexion() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE productos SET stock_actual = stock_actual + %s WHERE id_producto = %s",
+                    (cantidad, producto_id)
+                )
+                conn.commit()
+                return True
+            
+            
     def listar_movimientos(self):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:

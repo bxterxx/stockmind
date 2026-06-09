@@ -57,6 +57,10 @@ body {
   display: inline-block;
   text-align: center;
   cursor: pointer;
+  display: inline-flex; 
+  align-items: center;      
+  justify-content: center;  
+  gap: 8px;
 }
 
 .btn-nav:hover {

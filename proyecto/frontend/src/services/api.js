@@ -1,6 +1,60 @@
 const API_URL = "http://localhost:8000";
 
-// Productos
+// ==========================================
+// 👥 USUARIOS
+// ==========================================
+export const usuariosAPI = {
+  registrar: async (datos) => {
+    const params = new URLSearchParams({
+      id_usuario: datos.id_usuario,
+      nombre_completo: datos.nombre_completo,
+      username: datos.username,
+      password: datos.password,
+      rol: datos.rol,
+    });
+    const response = await fetch(`${API_URL}/usuarios/registro?${params}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!response.ok) throw new Error("Error al registrar usuario");
+    return response.json();
+  },
+  
+  verPerfil: async (id) => {
+    const response = await fetch(`${API_URL}/usuarios/${id}`);
+    if (!response.ok) throw new Error("Usuario no encontrado");
+    return response.json();
+  },
+
+  listar: async () => {
+    // Apunta exactamente a @router.get("/") con el prefijo /usuarios
+    const response = await fetch(`${API_URL}/usuarios/`);
+    if (!response.ok) throw new Error("Error al obtener usuarios");
+    return response.json();
+  },
+
+  eliminar: async (id) => {
+    try {
+      // ✅ CORREGIDO: Envía el ID directo en la URL para cumplir con @router.delete("/{id_usuario}")
+      const response = await fetch(`${API_URL}/usuarios/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" }
+      });
+      
+      if (!response.ok) throw new Error("Error al eliminar usuario");
+      
+      // Manejo seguro por si el backend responde con contenido vacío (204 No Content)
+      if (response.status === 204) return { success: true };
+      return response.json();
+    } catch (err) {
+      throw new Error("RESTRICT_IN_USE");
+    }
+  },
+};
+
+// ==========================================
+// 📦 PRODUCTOS
+// ==========================================
 export const productosAPI = {
   obtenerTodos: async () => {
     const response = await fetch(`${API_URL}/productos/`);
@@ -25,40 +79,21 @@ export const productosAPI = {
   },
   
   eliminar: async (id) => {
-    const response = await fetch(`${API_URL}/productos/${id}`, {
-      method: "DELETE",
-    });
-    if (!response.ok) throw new Error("Error al eliminar producto");
-    return response.json();
+    try {
+      const response = await fetch(`${API_URL}/productos/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Error al eliminar producto");
+      return response.json();
+    } catch (err) {
+      throw new Error("RESTRICT_IN_USE");
+    }
   },
 };
 
-// Usuarios
-export const usuariosAPI = {
-  registrar: async (datos) => {
-    const params = new URLSearchParams({
-      id_usuario: datos.id_usuario,
-      nombre_completo: datos.nombre_completo,
-      username: datos.username,
-      password: datos.password,
-      rol: datos.rol,
-    });
-    const response = await fetch(`${API_URL}/usuarios/registro?${params}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    });
-    if (!response.ok) throw new Error("Error al registrar usuario");
-    return response.json();
-  },
-  
-  verPerfil: async (id) => {
-    const response = await fetch(`${API_URL}/usuarios/${id}`);
-    if (!response.ok) throw new Error("Usuario no encontrado");
-    return response.json();
-  },
-};
-
-// Categorías
+// ==========================================
+// 🏷️ CATEGORÍAS
+// ==========================================
 export const categoriasAPI = {
   obtenerTodas: async () => {
     const response = await fetch(`${API_URL}/categorias/`);
@@ -86,15 +121,23 @@ export const categoriasAPI = {
   },
   
   eliminar: async (id) => {
-    const response = await fetch(`${API_URL}/categorias/${id}`, {
-      method: "DELETE",
-    });
-    if (!response.ok) throw new Error("Error al eliminar categoría");
-    return response.json();
+    try {
+      const response = await fetch(`${API_URL}/categorias/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("RESTRICT_IN_USE");
+      
+      if (response.status === 204) return { success: true };
+      return response.json();
+    } catch (err) {
+      throw new Error("RESTRICT_IN_USE");
+    }
   },
 };
 
-// Proveedores
+// ==========================================
+// 🏢 PROVEEDORES
+// ==========================================
 export const proveedoresAPI = {
   listar: async () => {
     const response = await fetch(`${API_URL}/proveedores/`);
@@ -117,15 +160,23 @@ export const proveedoresAPI = {
   },
   
   eliminar: async (id) => {
-    const response = await fetch(`${API_URL}/proveedores/${id}`, {
-      method: "DELETE",
-    });
-    if (!response.ok) throw new Error("Error al eliminar proveedor");
-    return response.json();
+    try {
+      const response = await fetch(`${API_URL}/proveedores/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("RESTRICT_IN_USE");
+      
+      if (response.status === 204) return { success: true };
+      return response.json();
+    } catch (err) {
+      throw new Error("RESTRICT_IN_USE");
+    }
   },
 };
 
-// Movimientos
+// ==========================================
+// 📊 MOVIMIENTOS
+// ==========================================
 export const movimientosAPI = {
   crear: async (datos) => {
     const params = new URLSearchParams({
@@ -163,10 +214,14 @@ export const movimientosAPI = {
   },
   
   eliminar: async (id) => {
-    const response = await fetch(`${API_URL}/movimientos/${id}`, {
-      method: "DELETE",
-    });
-    if (!response.ok) throw new Error("Error al eliminar movimiento");
-    return response.json();
+    try {
+      const response = await fetch(`${API_URL}/movimientos/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Error al eliminar movimiento");
+      return response.json();
+    } catch (err) {
+      throw new Error("RESTRICT_IN_USE");
+    }
   },
-};
+}

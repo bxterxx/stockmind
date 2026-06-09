@@ -4,7 +4,7 @@ from database import obtener_conexion
 
 class CategoriaRepository(CategoriaInterface):
     
-    def obtener_categorias(self, id: int = None, nombre: str = None):
+    def obtener_categorias(self):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
                 cursor.execute("SELECT id_categoria, nombre FROM Categorias")

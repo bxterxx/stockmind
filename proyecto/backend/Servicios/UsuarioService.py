@@ -24,3 +24,11 @@ class UsuarioService:
             return usuario
         else:
             return {"message": f"Usuario con ID {id_usuario} no encontrado"}
+        
+    def Eliminar_usuario(self, id_usuario: int):
+        resultado = self.repositorio.eliminar_usuario(id_usuario)
+        return resultado
+    
+    def Listar_usuarios(self):
+        usuarios = self.repositorio.listar_usuarios()
+        return usuarios

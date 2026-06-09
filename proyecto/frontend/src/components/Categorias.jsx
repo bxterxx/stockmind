@@ -10,10 +10,8 @@ export const Categorias = () => {
   const [showBuscar, setShowBuscar] = useState(false);
   const [detalle, setDetalle] = useState(null);
   const [buscarId, setBuscarId] = useState("");
-  const [formData, setFormData] = useState({
-    id: "",
-    nombre: "",
-  });
+  const [noEncontrado, setNoEncontrado] = useState(false);
+  const [formData, setFormData] = useState({ id: "", nombre: "" });
 
   useEffect(() => {
     cargarCategorias();
@@ -26,7 +24,7 @@ export const Categorias = () => {
       setCategorias(data);
       setError(null);
     } catch (err) {
-      setError(err.message);
+      setError("Error de conexión con el servidor. No se pudieron cargar las categorías.");
     } finally {
       setLoading(false);
     }
@@ -34,35 +32,32 @@ export const Categorias = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const nuevaCategoria = {
+      await categoriasAPI.crear({
         id: parseInt(formData.id),
         nombre: formData.nombre,
-      };
-      await categoriasAPI.crear(nuevaCategoria);
+      });
       setFormData({ id: "", nombre: "" });
       setShowForm(false);
       cargarCategorias();
     } catch (err) {
-      setError(err.message);
+      setError("No se pudo guardar la categoría.");
     }
   };
 
   const handleEliminar = async (id) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar esta categoría?")) {
       try {
+        setError(null); 
         await categoriasAPI.eliminar(id);
-        cargarCategorias();
+        await cargarCategorias();
       } catch (err) {
-        setError(err.message);
+        setError("⚠️ No se puede eliminar esta categoría porque está siendo utilizada por uno o más productos.");
       }
     }
   };
@@ -73,11 +68,20 @@ export const Categorias = () => {
       return;
     }
     try {
+      setError(null);
+      setNoEncontrado(false);
+      setDetalle(null); 
+
       const categoria = await categoriasAPI.obtenerPorId(parseInt(buscarId));
-      setDetalle(categoria);
+      if (categoria && categoria.id) {
+        setDetalle(categoria);
+      } else {
+        setDetalle(null);
+        setNoEncontrado(true); 
+      }
     } catch (err) {
-      setError(err.message);
       setDetalle(null);
+      setNoEncontrado(true);
     }
   };
 
@@ -88,39 +92,57 @@ export const Categorias = () => {
       <h2>🏷️ Gestión de Categorías</h2>
       {error && <div className="error">{error}</div>}
 
-      <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
-        {showForm ? "Cancelar" : "+ Nueva Categoría"}
-      </button>
+      <div style={{ display: 'flex', gap: '15px', marginBottom: '20px', alignItems: 'center' }}>
+        <button 
+          className="btn-primary" 
+          onClick={() => {
+            setShowForm(!showForm);
+            setError(null); 
+            if(showBuscar) setShowBuscar(false);
+          }}
+          style={{ 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: '8px',
+            backgroundColor: showForm ? '#d32f2f' : '',
+            borderColor: showForm ? '#d32f2f' : ''
+          }}
+        >
+          {showForm ? "Cancelar" : "+ Nueva Categoría"}
+        </button>
 
-      <button className="btn-secondary" onClick={() => setShowBuscar(!showBuscar)}>
-        {showBuscar ? "Cancelar" : "🔍 Ver Detalles"}
-      </button>
+        <button 
+          className={showBuscar ? "btn-primary" : "btn-secondary"} 
+          onClick={() => {
+            setShowBuscar(!showBuscar);
+            setNoEncontrado(false);
+            setError(null); 
+            setDetalle(null);
+            if(showForm) setShowForm(false);
+          }}
+          style={{ 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: '8px',
+            backgroundColor: showBuscar ? '#d32f2f' : '',
+            borderColor: showBuscar ? '#d32f2f' : ''
+          }}
+        >
+          {showBuscar ? "Cancelar" : "🔍 Ver Detalles"}
+        </button>
+      </div>
 
       {showForm && (
         <form onSubmit={handleSubmit} className="form">
           <div className="form-group">
             <label>ID Categoría:</label>
-            <input
-              type="number"
-              name="id"
-              value={formData.id}
-              onChange={handleInputChange}
-              required
-            />
+            <input type="number" name="id" value={formData.id} onChange={handleInputChange} required />
           </div>
           <div className="form-group">
             <label>Nombre:</label>
-            <input
-              type="text"
-              name="nombre"
-              value={formData.nombre}
-              onChange={handleInputChange}
-              required
-            />
+            <input type="text" name="nombre" value={formData.nombre} onChange={handleInputChange} required />
           </div>
-          <button type="submit" className="btn-success">
-            Guardar Categoría
-          </button>
+          <button type="submit" className="btn-success">Guardar Categoría</button>
         </form>
       )}
 
@@ -136,15 +158,19 @@ export const Categorias = () => {
               placeholder="Ingresa el ID de la categoría"
             />
           </div>
-          <button className="btn-primary" onClick={handleBuscarPorId}>
-            Buscar
-          </button>
+          <button className="btn-primary" onClick={handleBuscarPorId}>Buscar</button>
 
-          {detalle && (
-            <div className="perfil-info">
+          {detalle && detalle.id && (
+            <div className="perfil-info" style={{ marginTop: '15px' }}>
               <h4>Detalles de la Categoría</h4>
               <p><strong>ID:</strong> {detalle.id}</p>
               <p><strong>Nombre:</strong> {detalle.nombre}</p>
+            </div>
+          )}
+
+          {noEncontrado && (
+            <div className="error" style={{ marginTop: '15px', backgroundColor: '#ffebee', color: '#c62828', padding: '10px', borderRadius: '4px' }}>
+              ⚠️ La categoría con ID <strong>{buscarId}</strong> no existe en el sistema.
             </div>
           )}
         </div>
@@ -168,12 +194,7 @@ export const Categorias = () => {
                   <td>{cat.id}</td>
                   <td>{cat.nombre}</td>
                   <td>
-                    <button
-                      className="btn-danger"
-                      onClick={() => handleEliminar(cat.id)}
-                    >
-                      Eliminar
-                    </button>
+                    <button className="btn-danger" onClick={() => handleEliminar(cat.id)}>Eliminar</button>
                   </td>
                 </tr>
               ))}
@@ -183,4 +204,4 @@ export const Categorias = () => {
       )}
     </div>
   );
-};
+}

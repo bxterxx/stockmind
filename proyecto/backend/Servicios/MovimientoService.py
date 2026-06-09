@@ -19,6 +19,13 @@ class MovimientoService:
         movimiento_creado = self.repositorio.crear_movimiento(id, producto_id, id_usuario, tipo, cantidad, fecha)
         
         if movimiento_creado:
+            
+            if tipo_movimiento == "ENTRADA":
+                self.repositorio.actualizar_stock(producto_id, cantidad)
+                
+            elif tipo_movimiento == "SALIDA":
+                self.repositorio.actualizar_stock(producto_id, -cantidad)
+                
             return {"message": f"Movimiento creado correctamente con ID {id}"}
         else:
             return {"message": "Error al crear el movimiento"}
