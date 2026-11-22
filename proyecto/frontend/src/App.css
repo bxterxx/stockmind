@@ -125,6 +125,42 @@ body {
   text-align: center;
 }
 
+/* Sesión y rol */
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+}
+
+.login-card {
+  width: min(420px, 100%);
+  background: white;
+  border-radius: 14px;
+  padding: 36px;
+  box-shadow: 0 16px 40px rgba(27, 94, 32, 0.18);
+  text-align: center;
+}
+
+.login-card h1 { color: #1b5e20; margin: 8px 0 4px; }
+.login-card p { color: #607d8b; margin-bottom: 24px; }
+.login-logo { font-size: 52px; }
+.login-card .form-group { text-align: left; }
+.login-button { width: 100%; margin-top: 8px; }
+
+.usuario-nav {
+  color: white;
+  text-align: right;
+  line-height: 1.15;
+  font-size: 13px;
+  border-left: 1px solid rgba(255,255,255,.35);
+  padding-left: 12px;
+}
+
+.usuario-nav small { opacity: .85; }
+.btn-salir { background: rgba(183, 28, 28, .35); }
+
 /* Responsive */
 @media (max-width: 768px) {
   .navbar {

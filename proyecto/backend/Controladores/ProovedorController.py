@@ -1,5 +1,4 @@
 from fastapi import APIRouter, HTTPException
-from typing import List
 from Servicios.ProovedorService import ProovedorService
 
 router = APIRouter(prefix="/proveedores", tags=["Proveedores"])

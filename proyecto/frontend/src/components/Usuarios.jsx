@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { usuariosAPI } from "../services/api";
+import { esAdministrador } from "../auth";
 import "../styles/Componentes.css";
 
 export const Usuarios = () => {
@@ -129,42 +130,48 @@ export const Usuarios = () => {
     }
   };
 
+  const administrador = esAdministrador();
+
   return (
     <div className="card">
       <h2>👥 Registro de Usuarios</h2>
       {error && <div className="error">{error}</div>}
 
       <div style={{ display: 'flex', gap: '12px', marginBottom: '25px', alignItems: 'center', flexWrap: 'wrap' }}>
-        <button 
-          className="btn-primary" 
-          onClick={() => {
-            setShowForm(!showForm);
-            setError(null);
-            if(showPerfil) setShowPerfil(false);
-          }}
-          style={{
-            display: 'inline-flex', alignItems: 'center', gap: '8px',
-            backgroundColor: showForm ? '#d32f2f' : '', borderColor: showForm ? '#d32f2f' : ''
-          }}
-        >
-          {showForm ? "Cancelar" : "+ Nuevo Usuario"}
-        </button>
-        
-        <button 
-          className={showPerfil ? "btn-primary" : "btn-secondary"} 
-          onClick={() => {
-            setShowPerfil(!showPerfil);
-            setError(null);
-            setUsuarioPerfil(null);
-            if(showForm) setShowForm(false);
-          }}
-          style={{
-            display: 'inline-flex', alignItems: 'center', gap: '8px',
-            backgroundColor: showPerfil ? '#d32f2f' : '', borderColor: showPerfil ? '#d32f2f' : ''
-          }}
-        >
-          {showPerfil ? "Cancelar" : "🔍 Ver Perfil"}
-        </button>
+        {administrador && (
+          <>
+            <button 
+              className="btn-primary" 
+              onClick={() => {
+                setShowForm(!showForm);
+                setError(null);
+                if(showPerfil) setShowPerfil(false);
+              }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '8px',
+                backgroundColor: showForm ? '#d32f2f' : '', borderColor: showForm ? '#d32f2f' : ''
+              }}
+            >
+              {showForm ? "Cancelar" : "+ Nuevo Usuario"}
+            </button>
+            
+            <button 
+              className={showPerfil ? "btn-primary" : "btn-secondary"} 
+              onClick={() => {
+                setShowPerfil(!showPerfil);
+                setError(null);
+                setUsuarioPerfil(null);
+                if(showForm) setShowForm(false);
+              }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '8px',
+                backgroundColor: showPerfil ? '#d32f2f' : '', borderColor: showPerfil ? '#d32f2f' : ''
+              }}
+            >
+              {showPerfil ? "Cancelar" : "🔍 Ver Perfil"}
+            </button>
+          </>
+        )}
       </div>
 
       {showForm && (

@@ -4,7 +4,7 @@ from Servicios.MovimientoService import MovimientoService
 router = APIRouter(prefix="/movimientos", tags=["Movimientos"])
 movimiento_service = MovimientoService()
 
-# Registrar un movimiento (Entrada o Salida)
+# Registrar un movimiento 
 @router.post("/")
 
 def crear_movimiento(id: int, Producto: int, Usuario: int, tipo: str, cantidad: int, fecha: str):

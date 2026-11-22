@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { productosAPI, categoriasAPI, proveedoresAPI } from "../services/api";
+import { esAdministrador } from "../auth";
 import "../styles/Componentes.css";
 
 export const Productos = () => {
@@ -110,6 +111,8 @@ export const Productos = () => {
     }
   };
 
+  const administrador = esAdministrador();
+
   if (loading) return <div className="card"><p>Cargando productos...</p></div>;
 
   return (
@@ -118,23 +121,22 @@ export const Productos = () => {
       {error && <div className="error">{error}</div>}
       
       <div style={{ display: 'flex', gap: '15px', marginBottom: '20px', alignItems: 'center' }}>
-        <button 
-          className="btn-primary" 
-          onClick={() => {
-            setShowForm(!showForm);
-            setError(null);
-            if(showBuscar) setShowBuscar(false);
-          }}
-          style={{ 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            gap: '8px',
-            backgroundColor: showForm ? '#d32f2f' : '',
-            borderColor: showForm ? '#d32f2f' : ''
-          }}
-        >
-          {showForm ? "Cancelar" : "+ Nuevo Producto"}
-        </button>
+        {administrador && (
+          <button 
+            className="btn-primary" 
+            onClick={() => {
+              setShowForm(!showForm);
+              setError(null);
+              if(showBuscar) setShowBuscar(false);
+            }}
+            style={{ 
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              backgroundColor: showForm ? '#d32f2f' : '', borderColor: showForm ? '#d32f2f' : ''
+            }}
+          >
+            {showForm ? "Cancelar" : "+ Nuevo Producto"}
+          </button>
+        )}
 
         <button 
           className={showBuscar ? "btn-primary" : "btn-secondary"} 
@@ -254,7 +256,7 @@ export const Productos = () => {
                 <th>Stock</th>
                 <th>Mín.</th>
                 <th>Descripción</th>
-                <th>Acciones</th>
+                {administrador && <th>Acciones</th>}
               </tr>
             </thead>
             <tbody>
@@ -266,9 +268,11 @@ export const Productos = () => {
                   <td>{prod.stock_actual}</td>
                   <td>{prod.stock_minimo}</td>
                   <td>{prod.descripcion}</td>
-                  <td>
-                    <button className="btn-danger" onClick={() => handleEliminar(prod.id)}>Eliminar</button>
-                  </td>
+                  {administrador && (
+                    <td>
+                      <button className="btn-danger" onClick={() => handleEliminar(prod.id)}>Eliminar</button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

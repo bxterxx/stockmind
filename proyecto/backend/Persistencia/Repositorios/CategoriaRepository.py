@@ -40,3 +40,13 @@ class CategoriaRepository(CategoriaInterface):
                 affected_rows = cursor.rowcount
             conn.commit()
             return affected_rows > 0
+        
+    def actualizar_categoria(self, categoria_id: int, nombre: str):
+        with obtener_conexion() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE Categorias SET nombre=%s WHERE id_categoria=%s",
+                    (nombre, categoria_id)
+                )
+                conn.commit()
+                return cursor.rowcount > 0

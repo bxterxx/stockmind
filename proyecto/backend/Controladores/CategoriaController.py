@@ -9,11 +9,13 @@ categoria_service = CategoriaService()
 
 # obtener todas las categorías
 @router.get("/")
+
 def obtener_todas_categorias():
     return categoria_service.Obtener_categorias()
 
 # obtener una categoría por ID
 @router.get("/{id}")
+
 def obtener_categoria_por_id(id: int):
     categoria = categoria_service.Obtener_categoria_por_id(id)
     if not categoria:
@@ -28,6 +30,7 @@ def crear_categoria(id: int, nombre: str):
 
 # eliminar una categoría
 @router.delete("/{id}")
+
 def eliminar_categoria(id: int):
     success = categoria_service.Eliminar_categoria(id)
     if not success:

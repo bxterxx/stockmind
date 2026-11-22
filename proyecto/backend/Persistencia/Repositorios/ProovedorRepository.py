@@ -1,5 +1,4 @@
 from Persistencia.Interfaces.ProovedorInterface import ProovedorInterface
-from Entidades.Proovedor import Proveedor
 from database import obtener_conexion
 
 

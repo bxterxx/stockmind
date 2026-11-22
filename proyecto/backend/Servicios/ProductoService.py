@@ -14,10 +14,13 @@ class ProductoService:
     def Crear_producto(self, id: int, nombre: str, precio: float, stock_actual: int, stock_minimo: int, descripcion: str, categoria_id: int, proveedor_id: int):
         return self.repositorio.crear_producto(id, nombre, precio, stock_actual, stock_minimo, descripcion, categoria_id, proveedor_id)
     
+    def Actualizar_producto(self, id: int, nombre: str, precio: float, stock_actual: int, stock_minimo: int, descripcion: str, categoria_id: int, proveedor_id: int):
+        return self.repositorio.actualizar_producto(id, nombre, precio, stock_actual, stock_minimo, descripcion, categoria_id, proveedor_id)
+
     def Eliminar_producto(self, id: int):
         if not id:
             return {"message": "El ID del producto es obligatorio"}
         
         resultado = self.repositorio.eliminar_producto(id)
         return resultado
-    
+

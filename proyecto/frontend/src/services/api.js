@@ -4,6 +4,15 @@ const API_URL = "http://localhost:8000";
 // 👥 USUARIOS
 // ==========================================
 export const usuariosAPI = {
+  login: async (username, password) => {
+    const params = new URLSearchParams({ username, password });
+    const response = await fetch(`${API_URL}/usuarios/login?${params}`, {
+      method: "POST",
+    });
+    if (!response.ok) throw new Error("Usuario o contraseña incorrectos");
+    return response.json();
+  },
+
   registrar: async (datos) => {
     const params = new URLSearchParams({
       id_usuario: datos.id_usuario,
@@ -78,6 +87,16 @@ export const productosAPI = {
     return response.json();
   },
   
+  actualizar: async (id, datos) => {
+    const response = await fetch(`${API_URL}/productos/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id_producto: id, ...datos }),
+    });
+    if (!response.ok) throw new Error("Error al actualizar producto");
+    return response.json();
+  },
+
   eliminar: async (id) => {
     try {
       const response = await fetch(`${API_URL}/productos/${id}`, {

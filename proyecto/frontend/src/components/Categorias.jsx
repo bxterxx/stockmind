@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { categoriasAPI } from "../services/api";
+import { esAdministrador } from "../auth";
 import "../styles/Componentes.css";
 
 export const Categorias = () => {
@@ -85,6 +86,8 @@ export const Categorias = () => {
     }
   };
 
+  const administrador = esAdministrador();
+
   if (loading) return <div className="card"><p>Cargando categorías...</p></div>;
 
   return (
@@ -93,23 +96,22 @@ export const Categorias = () => {
       {error && <div className="error">{error}</div>}
 
       <div style={{ display: 'flex', gap: '15px', marginBottom: '20px', alignItems: 'center' }}>
-        <button 
-          className="btn-primary" 
-          onClick={() => {
-            setShowForm(!showForm);
-            setError(null); 
-            if(showBuscar) setShowBuscar(false);
-          }}
-          style={{ 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            gap: '8px',
-            backgroundColor: showForm ? '#d32f2f' : '',
-            borderColor: showForm ? '#d32f2f' : ''
-          }}
-        >
-          {showForm ? "Cancelar" : "+ Nueva Categoría"}
-        </button>
+        {administrador && (
+          <button 
+            className="btn-primary" 
+            onClick={() => {
+              setShowForm(!showForm);
+              setError(null); 
+              if(showBuscar) setShowBuscar(false);
+            }}
+            style={{ 
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              backgroundColor: showForm ? '#d32f2f' : '', borderColor: showForm ? '#d32f2f' : ''
+            }}
+          >
+            {showForm ? "Cancelar" : "+ Nueva Categoría"}
+          </button>
+        )}
 
         <button 
           className={showBuscar ? "btn-primary" : "btn-secondary"} 
@@ -121,11 +123,8 @@ export const Categorias = () => {
             if(showForm) setShowForm(false);
           }}
           style={{ 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            gap: '8px',
-            backgroundColor: showBuscar ? '#d32f2f' : '',
-            borderColor: showBuscar ? '#d32f2f' : ''
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            backgroundColor: showBuscar ? '#d32f2f' : '', borderColor: showBuscar ? '#d32f2f' : ''
           }}
         >
           {showBuscar ? "Cancelar" : "🔍 Ver Detalles"}
@@ -185,7 +184,7 @@ export const Categorias = () => {
               <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Acciones</th>
+                {administrador && <th>Acciones</th>}
               </tr>
             </thead>
             <tbody>
@@ -193,9 +192,11 @@ export const Categorias = () => {
                 <tr key={cat.id}>
                   <td>{cat.id}</td>
                   <td>{cat.nombre}</td>
-                  <td>
-                    <button className="btn-danger" onClick={() => handleEliminar(cat.id)}>Eliminar</button>
-                  </td>
+                  {administrador && (
+                    <td>
+                      <button className="btn-danger" onClick={() => handleEliminar(cat.id)}>Eliminar</button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

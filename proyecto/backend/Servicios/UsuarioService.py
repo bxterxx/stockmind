@@ -4,7 +4,7 @@ from Persistencia.Repositorios.UsuarioRepository import UsuarioRepository
 class UsuarioService:
     def __init__(self):
         self.repositorio = UsuarioRepository()
-        
+
     def Crear_usuario(self, id_usuario: int, nombre_completo: str, username: str, password: str, rol: str):
         if not nombre_completo or not password or not rol:
             return {"message": "El nombre completo, contraseña y rol son obligatorios"}
@@ -17,18 +17,21 @@ class UsuarioService:
                 "username": username,
                 "rol": rol
             }
-        
+
+    def Iniciar_sesion(self, username: str, password: str):
+        return self.repositorio.iniciar_sesion(username, password)
+
+    def Actualizar_usuario(self, id_usuario: int, nombre_completo: str, username: str, password: str, rol: str):
+        return self.repositorio.actualizar_usuario(id_usuario, nombre_completo, username, password, rol)
+
     def Ver_perfil(self, id_usuario: int):
         usuario = self.repositorio.ver_perfil(id_usuario)
         if usuario:
             return usuario
-        else:
-            return {"message": f"Usuario con ID {id_usuario} no encontrado"}
-        
+        return {"message": f"Usuario con ID {id_usuario} no encontrado"}
+
     def Eliminar_usuario(self, id_usuario: int):
-        resultado = self.repositorio.eliminar_usuario(id_usuario)
-        return resultado
-    
+        return self.repositorio.eliminar_usuario(id_usuario)
+
     def Listar_usuarios(self):
-        usuarios = self.repositorio.listar_usuarios()
-        return usuarios
+        return self.repositorio.listar_usuarios()

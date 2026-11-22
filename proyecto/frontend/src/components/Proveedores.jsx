@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { proveedoresAPI } from "../services/api";
+import { esAdministrador } from "../auth";
 import "../styles/Componentes.css";
 
 export const Proveedores = () => {
@@ -86,29 +87,30 @@ export const Proveedores = () => {
 
   if (loading) return <div className="card"><p>Cargando proveedores...</p></div>;
 
+  const administrador = esAdministrador();
+
   return (
     <div className="card">
       <h2>🏢 Gestión de Proveedores</h2>
       {error && <div className="error">{error}</div>}
 
       <div style={{ display: 'flex', gap: '15px', marginBottom: '20px', alignItems: 'center' }}>
-        <button 
-          className="btn-primary" 
-          onClick={() => {
-            setShowForm(!showForm);
-            setError(null);
-            if(showBuscar) setShowBuscar(false);
-          }}
-          style={{ 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            gap: '8px',
-            backgroundColor: showForm ? '#d32f2f' : '',
-            borderColor: showForm ? '#d32f2f' : ''
-          }}
-        >
-          {showForm ? "Cancelar" : "+ Nuevo Proveedor"}
-        </button>
+        {administrador && (
+          <button 
+            className="btn-primary" 
+            onClick={() => {
+              setShowForm(!showForm);
+              setError(null);
+              if(showBuscar) setShowBuscar(false);
+            }}
+            style={{ 
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              backgroundColor: showForm ? '#d32f2f' : '', borderColor: showForm ? '#d32f2f' : ''
+            }}
+          >
+            {showForm ? "Cancelar" : "+ Nuevo Proveedor"}
+          </button>
+        )}
 
         <button 
           className={showBuscar ? "btn-primary" : "btn-secondary"} 
@@ -120,11 +122,8 @@ export const Proveedores = () => {
             if(showForm) setShowForm(false);
           }}
           style={{ 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            gap: '8px',
-            backgroundColor: showBuscar ? '#d32f2f' : '',
-            borderColor: showBuscar ? '#d32f2f' : ''
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            backgroundColor: showBuscar ? '#d32f2f' : '', borderColor: showBuscar ? '#d32f2f' : ''
           }}
         >
           {showBuscar ? "Cancelar" : "🔍 Ver Detalles"}
@@ -190,7 +189,7 @@ export const Proveedores = () => {
                 <th>ID</th>
                 <th>Nombre Empresa</th>
                 <th>Teléfono</th>
-                <th>Acciones</th>
+                {administrador && <th>Acciones</th>}
               </tr>
             </thead>
             <tbody>
@@ -199,9 +198,11 @@ export const Proveedores = () => {
                   <td>{prov.id}</td>
                   <td>{prov.nombre_empresa}</td>
                   <td>{prov.telefono}</td>
-                  <td>
-                    <button className="btn-danger" onClick={() => handleEliminar(prov.id)}>Eliminar</button>
-                  </td>
+                  {administrador && (
+                    <td>
+                      <button className="btn-danger" onClick={() => handleEliminar(prov.id)}>Eliminar</button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

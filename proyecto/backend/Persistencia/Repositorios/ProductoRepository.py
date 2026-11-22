@@ -1,5 +1,4 @@
 from Persistencia.Interfaces.ProductoInterface import ProductoInterface
-from Entidades import Productos
 from database import obtener_conexion
 
 
@@ -28,11 +27,20 @@ class ProductoRepository(ProductoInterface):
             conn.commit()
             return {"message": f"Producto {nombre} creado correctamente con ID {producto_id}"}
 
+    def actualizar_producto(self, producto_id: int, nombre: str, precio_venta: float, stock_actual: int, stock_minimo: int, descripcion: str, categoria_id: int, proveedor_id: int):
+        with obtener_conexion() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE Productos SET nombre=%s, precio_venta=%s, stock_actual=%s, stock_minimo=%s, descripcion=%s, id_categoria=%s, id_proveedor=%s WHERE id_producto=%s",
+                    (nombre, precio_venta, stock_actual, stock_minimo, descripcion, categoria_id, proveedor_id, producto_id)
+                )
+                conn.commit()
+                return cursor.rowcount > 0
+
     def eliminar_producto(self, producto_id: int):
         with obtener_conexion() as conn:
             with conn.cursor() as cursor:
                 cursor.execute("DELETE FROM Productos WHERE id_producto = %s", (producto_id,))
                 affected_rows = cursor.rowcount
             conn.commit()
-            return affected_rows > 0         
-                      
+            return affected_rows > 0

@@ -8,4 +8,4 @@ class Usuario:
     username = Column(String, unique=True, index=True, nullable=False)
     email = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False) # Nunca guardar en texto plano
-    rol = Column(String, default="empleado") # admin o empleado
+    rol = Column(String)

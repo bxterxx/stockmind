@@ -27,6 +27,14 @@ def obtener_producto_por_el_id(id: int):
 def crear_producto_nuevo(id_producto: int = Body(...), nombre: str = Body(...), precio_venta: float = Body(...), stock_actual: int = Body(...), stock_minimo: int = Body(...), descripcion: str = Body(...), categoria_id: int = Body(...), proveedor_id: int = Body(...)):
     return producto_service.Crear_producto(id_producto, nombre, precio_venta, stock_actual, stock_minimo, descripcion, categoria_id, proveedor_id)
 
+# ACTUALIZAR UN PRODUCTO
+@router.put("/{id}")
+def actualizar_producto(id: int, id_producto: int = Body(...), nombre: str = Body(...), precio_venta: float = Body(...), stock_actual: int = Body(...), stock_minimo: int = Body(...), descripcion: str = Body(...), categoria_id: int = Body(...), proveedor_id: int = Body(...)):
+    actualizado = producto_service.Actualizar_producto(id, nombre, precio_venta, stock_actual, stock_minimo, descripcion, categoria_id, proveedor_id)
+    if not actualizado:
+        raise HTTPException(status_code=404, detail=f"Producto con id {id} no encontrado")
+    return {"message": "Producto actualizado exitosamente"}
+
 # ELIMINAR UN PRODUCTO
 @router.delete("/{id}")
 

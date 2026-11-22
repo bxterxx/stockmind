@@ -1,7 +1,5 @@
 from Persistencia.Interfaces.MovimientoInterface import MovimientoInterface
 from datetime import datetime
-
-from Entidades.Movimiento import Movimiento
 from database import obtener_conexion
 
 

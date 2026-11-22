@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { movimientosAPI, productosAPI } from "../services/api";
+import { esAdministrador } from "../auth";
 import "../styles/Componentes.css";
 
 export const Movimientos = () => {
@@ -117,6 +118,8 @@ export const Movimientos = () => {
     }
   };
 
+  const administrador = esAdministrador();
+
   if (loading) return <div className="card"><p>Cargando movimientos...</p></div>;
 
   return (
@@ -126,21 +129,23 @@ export const Movimientos = () => {
 
       {/* Contenedor de botones alineado perfectamente en una fila limpia */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '25px', alignItems: 'center', flexWrap: 'wrap' }}>
-        <button 
-          className="btn-primary" 
-          onClick={() => { 
-            setShowForm(!showForm); 
-            setError(null);
-            if(showBuscar) setShowBuscar(false); 
-            if(showBuscarId) setShowBuscarId(false); 
-          }}
-          style={{
-            display: 'inline-flex', alignItems: 'center', gap: '8px',
-            backgroundColor: showForm ? '#d32f2f' : '', borderColor: showForm ? '#d32f2f' : ''
-          }}
-        >
-          {showForm ? "Cancelar" : "+ Nuevo Movimiento"}
-        </button>
+        {administrador && (
+          <button 
+            className="btn-primary" 
+            onClick={() => { 
+              setShowForm(!showForm); 
+              setError(null);
+              if(showBuscar) setShowBuscar(false); 
+              if(showBuscarId) setShowBuscarId(false); 
+            }}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              backgroundColor: showForm ? '#d32f2f' : '', borderColor: showForm ? '#d32f2f' : ''
+            }}
+          >
+            {showForm ? "Cancelar" : "+ Nuevo Movimiento"}
+          </button>
+        )}
         
         <button 
           className={showBuscar ? "btn-primary" : "btn-secondary"} 
@@ -296,7 +301,7 @@ export const Movimientos = () => {
                 <th>Tipo</th>
                 <th>Cantidad</th>
                 <th>Fecha</th>
-                <th>Acciones</th>
+                {administrador && <th>Acciones</th>}
               </tr>
             </thead>
             <tbody>
@@ -312,9 +317,11 @@ export const Movimientos = () => {
                   </td>
                   <td>{mov.cantidad}</td>
                   <td>{mov.fecha}</td>
-                  <td>
-                    <button className="btn-danger" onClick={() => handleEliminarMovimiento(mov.id)}>Eliminar</button>
-                  </td>
+                  {administrador && (
+                    <td>
+                      <button className="btn-danger" onClick={() => handleEliminarMovimiento(mov.id)}>Eliminar</button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
